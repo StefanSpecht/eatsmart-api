@@ -1,4 +1,4 @@
-package dom.company.eatsmart2.resources;
+package dom.company.eatsmart.resources;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import dom.company.eatsmart2.model.Recipe;
-import dom.company.eatsmart2.service.RecipeService;
+import dom.company.eatsmart.model.Recipe;
+import dom.company.eatsmart.service.RecipeService;
 
 @Path("/recipes")
 public class RecipeResource {

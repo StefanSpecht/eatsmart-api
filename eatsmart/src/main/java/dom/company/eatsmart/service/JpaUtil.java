@@ -1,4 +1,4 @@
-package dom.company.eatsmart2.service;
+package dom.company.eatsmart.service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

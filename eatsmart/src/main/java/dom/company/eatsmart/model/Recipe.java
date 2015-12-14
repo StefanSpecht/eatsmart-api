@@ -1,4 +1,4 @@
-package dom.company.eatsmart2.model;
+package dom.company.eatsmart.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

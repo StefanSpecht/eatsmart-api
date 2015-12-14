@@ -1,11 +1,11 @@
-package dom.company.eatsmart2.service;
+package dom.company.eatsmart.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import dom.company.eatsmart2.model.Recipe;
+import dom.company.eatsmart.model.Recipe;
 
 public class RecipeService {
 	
