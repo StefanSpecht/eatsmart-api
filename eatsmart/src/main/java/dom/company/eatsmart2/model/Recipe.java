@@ -1,8 +1,13 @@
 package dom.company.eatsmart2.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Recipe {
 	
-	
+	@Id @GeneratedValue
 	private long id;
 	private String title;
 	private String instruction;
@@ -11,9 +16,8 @@ public class Recipe {
 		
 	}
 	
-	public Recipe(long id, String title, String instruction) {
+	public Recipe(String title, String instruction) {
 	super();
-	this.id = id;
 	this.title = title;
 	this.instruction = instruction;
 	}
