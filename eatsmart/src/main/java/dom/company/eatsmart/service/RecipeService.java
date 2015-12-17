@@ -9,7 +9,7 @@ import dom.company.eatsmart.model.Recipe;
 
 public class RecipeService {
 	
-	public List<Recipe> getAllRecipes() {
+	public List<Recipe> getRecipes() {
 		
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		Query query = entityManager.createQuery("Select r from Recipe r");

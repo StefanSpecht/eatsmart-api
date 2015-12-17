@@ -20,7 +20,7 @@ public class RecipeResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Recipe> getAllResource() {
-		return recipeService.getAllRecipes();
+		return recipeService.getRecipes();
 	}
 	
 	@POST
