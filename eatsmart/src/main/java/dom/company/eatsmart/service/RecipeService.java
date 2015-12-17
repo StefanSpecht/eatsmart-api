@@ -53,7 +53,9 @@ public class RecipeService {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		Recipe recipe = entityManager.find(Recipe.class, id);
 		if (recipe != null) {
+			entityManager.getTransaction().begin();
 			entityManager.remove(recipe);
+			entityManager.getTransaction().commit();
 		}
 	}
 	
