@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -29,6 +30,15 @@ public class RecipeResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Recipe getResource(@PathParam("recipeId") long recipeId) {
 		return recipeService.getRecipe(recipeId);
+	}
+	
+	@PUT
+	@Path("/{recipeId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Recipe updateResource(@PathParam("recipeId") long recipeId, Recipe recipe) {
+		recipe.setId(recipeId);
+		return recipeService.updateRecipe(recipe);
 	}
 	
 	@POST

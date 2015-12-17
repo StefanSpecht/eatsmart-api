@@ -41,7 +41,11 @@ public class RecipeService {
 			return null;
 		}
 		else {
-			return entityManager.merge(recipe);
+			entityManager.getTransaction().begin();
+			Recipe updatedRecipe = entityManager.merge(recipe);
+			entityManager.getTransaction().commit();
+			
+			return updatedRecipe;
 		}
 	}
 	
