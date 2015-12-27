@@ -6,6 +6,7 @@
     <persistence-unit name="EatSmart" transaction-type="RESOURCE_LOCAL">
       <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
       <class>dom.company.eatsmart.model.Recipe</class>
+      <class>dom.company.eatsmart.model.Ingredient</class>
       <properties>
         <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
         <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/eatsmart" />
