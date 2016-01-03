@@ -5,6 +5,7 @@
       xmlns="http://java.sun.com/xml/ns/persistence">
     <persistence-unit name="EatSmart" transaction-type="RESOURCE_LOCAL">
       <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+      <class>dom.company.eatsmart.model.User</class>
       <class>dom.company.eatsmart.model.Recipe</class>
       <class>dom.company.eatsmart.model.Ingredient</class>
       <properties>
