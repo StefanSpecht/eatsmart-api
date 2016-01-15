@@ -41,13 +41,14 @@ public class UserService {
 	
 	public User updateUser(User updatedUser) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
+		
 		User user = this.getUser(updatedUser.getId());
-		User managedUser = JpaUtil.getEntityManager().find(User.class, user.getId());
+		User managedUser = entityManager.find(User.class, user.getId());
 		
 		entityManager.getTransaction().begin();
 		managedUser.updateUser(updatedUser);
 		entityManager.getTransaction().commit();
-		return managedUser;		
+		return managedUser;
 	}
 	
 	public void deleteUser(long id) {
