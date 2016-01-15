@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -28,21 +29,28 @@ public class RecipeResource {
 	RecipeService recipeService = new RecipeService();
 	
 	@GET
-	public List<Recipe> getRecipes(@PathParam("userId") long userId) {
-		return recipeService.getRecipes(userId);
+	public Response getRecipes(@PathParam("userId") long userId) {
+		List<Recipe> recipes = recipeService.getRecipes(userId);
+		GenericEntity<List<Recipe>> entity = new GenericEntity<List<Recipe>>(recipes) {};
+		return Response.ok(entity)
+				.build();
 	}
 	
 	@GET
 	@Path("/{recipeId}")
-	public Recipe getResource(@PathParam("userId") long userId, @PathParam("recipeId") long recipeId) {
-		return recipeService.getRecipe(userId, recipeId);
+	public Response getRecipe(@PathParam("userId") long userId, @PathParam("recipeId") long recipeId) {
+		Recipe recipe = recipeService.getRecipe(userId, recipeId);
+		return Response.ok(recipe)
+				.build();
 	}
 	
 	@PUT
 	@Path("/{recipeId}")	
-	public Recipe updateResource(@PathParam("recipeId") long recipeId, Recipe recipe) {
+	public Response updateRecipe(@PathParam("userId") long userId, @PathParam("recipeId") long recipeId, Recipe recipe) {
 		recipe.setId(recipeId);
-		return recipeService.updateRecipe(recipe);
+		Recipe updatedRecipe = recipeService.updateRecipe(userId, recipe);
+		return Response.ok(updatedRecipe)
+					.build();		
 	}
 	
 	@POST
@@ -57,7 +65,9 @@ public class RecipeResource {
 	
 	@DELETE
 	@Path("/{recipeId}")	
-	public void deleteResource(@PathParam("recipeId") long recipeId, @PathParam("userId") long userId, @Context UriInfo uriInfo) {
-		recipeService.removeRecipe(recipeId, userId);
+	public Response deleteRecipe(@PathParam("recipeId") long recipeId, @PathParam("userId") long userId, @Context UriInfo uriInfo) {
+		recipeService.deleteRecipe(userId, recipeId);
+		return Response.noContent()
+					.build();
 	}
 }

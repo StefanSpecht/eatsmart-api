@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
+import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.model.Recipe;
 import dom.company.eatsmart.model.User;
 
@@ -18,19 +19,22 @@ public class RecipeService {
 	UserService userService = new UserService();
 	
 	public List<Recipe> getRecipes(long userId) {
-		return userService.getUser(userId).getRecipes();
+		User user = userService.getUser(userId);
 		
+		if (user == null) {
+			throw new DataNotFoundException("User with ID " + userId + " not found");
+		}
+		return user.getRecipes();
 	}
 	
 	public Recipe getRecipe(long userId, long recipeId) {
-		List<Recipe> allRecipes = userService.getUser(userId).getRecipes();
+		List<Recipe> allRecipes = this.getRecipes(userId);				
 		List<Recipe> filteredRecipes = allRecipes.stream().filter(r -> r.getId() == recipeId).collect(Collectors.toList());
 		
-		if (!filteredRecipes.isEmpty()) {		
-			Recipe recipe = filteredRecipes.get(0);
-			return recipe;
+		if (filteredRecipes.isEmpty()) {		
+			throw new DataNotFoundException("Recipe with ID " + recipeId + " not found for user with ID " + userId);
 		}
-		return null;
+		return filteredRecipes.get(0);
 	}
 	
 	public Recipe addRecipe(Recipe recipe, long userId) {
@@ -46,51 +50,32 @@ public class RecipeService {
 		return recipe;
 	}
 	
-	public Recipe updateRecipe(Recipe recipe) {
+	public Recipe updateRecipe(long userId, Recipe updatedRecipe) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
-
-		if (recipe.getId() <= 0) {
-			return null;
-		}
-		else {
-			entityManager.getTransaction().begin();
-			Recipe updatedRecipe = entityManager.merge(recipe);
-			entityManager.getTransaction().commit();
+		
+		Recipe recipe = this.getRecipe(userId, updatedRecipe.getId());
+		Recipe managedRecipe = JpaUtil.getEntityManager().find(Recipe.class, recipe.getId());
+		
+		entityManager.getTransaction().begin();
+		managedRecipe.updateRecipe(updatedRecipe);
+		entityManager.getTransaction().commit();
 			
-			return updatedRecipe;
-		}
+		return recipe;		
 	}
 	
-	public void removeRecipe(long recipeId, long userId) {
-		
+	public void deleteRecipe(long userId, long recipeId) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
-		/*
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Recipe> criteriaQuery = criteriaBuilder.createQuery(Recipe.class);
-		Root<Recipe> root = criteriaQuery.from(Recipe.class);
-		ParameterExpression<Long> recipeIdParam = criteriaBuilder.parameter(Long.class);
-		ParameterExpression<Long> userIdParam = criteriaBuilder.parameter(Long.class);
-				
-		criteriaQuery.select(root);
-		criteriaQuery.where(
-				criteriaBuilder.equal(root.get("RECIPE_ID"), recipeIdParam),
-				criteriaBuilder.equal(root.get("USER_ID"), userIdParam)
-				);
-		 TypedQuery<Recipe> typedQuery = entityManager.createQuery(criteriaQuery)
-		 	.setParameter("recipeIdParam", recipeId)
-		 	.setParameter("userIdParam", userId);
-		 	Recipe recipe = typedQuery.getSingleResult();
-		 */
-		 
-		 User user = entityManager.find(User.class, userId);
-		 Recipe recipe = entityManager.find(Recipe.class, recipeId);
-		 
-		 if (recipe != null && user != null && recipe.getOwner() == user) {
-			 entityManager.getTransaction().begin();
-			 user.removeRecipe(recipe);
-			 entityManager.remove(recipe);
-			 entityManager.getTransaction().commit();
-		}
+		
+		Recipe recipe = this.getRecipe(userId, recipeId);
+		User user = userService.getUser(userId);
+		
+		Recipe managedRecipe = entityManager.find(Recipe.class, recipe.getId());		
+		User managedUser = entityManager.find(User.class, user.getId());
+		
+		entityManager.getTransaction().begin();
+		managedUser.removeRecipe(managedRecipe);
+		entityManager.remove(managedRecipe);
+		entityManager.getTransaction().commit();
 	}
 	
 }

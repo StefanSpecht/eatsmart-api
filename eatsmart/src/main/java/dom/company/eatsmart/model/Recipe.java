@@ -75,5 +75,12 @@ public class Recipe {
 			currentOwner.getRecipes().remove(this);
 		}
 	}
+	public void updateRecipe(Recipe sourceRecipe) {
+		this.id = sourceRecipe.getId();
+		this.owner = sourceRecipe.getOwner();
+		this.title = sourceRecipe.getTitle();
+		this.instruction = sourceRecipe.getInstruction();
+		
+	}
 	
 }

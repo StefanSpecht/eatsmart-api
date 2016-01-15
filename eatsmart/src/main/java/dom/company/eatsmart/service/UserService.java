@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
+import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.model.User;
 
 public class UserService {
@@ -21,7 +22,11 @@ public class UserService {
 	}
 	
 	public User getUser(long id) {
-		return JpaUtil.getEntityManager().find(User.class, id);
+		User user =  JpaUtil.getEntityManager().find(User.class, id);
+		if(user == null) {
+			throw new DataNotFoundException("User with ID " + id + " not found");
+		}
+		return user;
 	}
 	
 	public User addUser(User user) {	
@@ -34,29 +39,26 @@ public class UserService {
 		return user;
 	}
 	
-	public User updateUser(User user) {
+	public User updateUser(User updatedUser) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
-		User currentUser = entityManager.find(User.class, user.getId());
+		User user = this.getUser(updatedUser.getId());
+		User managedUser = JpaUtil.getEntityManager().find(User.class, user.getId());
 		
-		if (currentUser != null) {
-			entityManager.getTransaction().begin();
-			currentUser.updateUser(user);
-			entityManager.getTransaction().commit();
-			return currentUser;
-		}
-		else {
-			return null;
-		}
+		entityManager.getTransaction().begin();
+		managedUser.updateUser(updatedUser);
+		entityManager.getTransaction().commit();
+		return managedUser;		
 	}
 	
-	public void removeUser(long id) {
+	public void deleteUser(long id) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		User user = entityManager.find(User.class, id);
-		if (user != null) {
-			entityManager.getTransaction().begin();
-			entityManager.remove(user);
-			entityManager.getTransaction().commit();
+		if (user == null) {
+			throw new DataNotFoundException("User with ID " + id + " not found");
 		}
+		entityManager.getTransaction().begin();
+		entityManager.remove(user);
+		entityManager.getTransaction().commit();
 	}
 	
 }

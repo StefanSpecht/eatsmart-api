@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.model.User;
 import dom.company.eatsmart.service.UserService;
 
@@ -31,19 +32,6 @@ public class UserResource {
 		return userService.getUsers();
 	}
 	
-	@GET
-	@Path("/{userId}")
-	public User getUser(@PathParam("userId") long userId) {
-		return userService.getUser(userId);
-	}
-	
-	@PUT
-	@Path("/{userId}")	
-	public User updateUser(@PathParam("userId") long userId, User user) {
-		user.setId(userId);		
-		return userService.updateUser(user);
-	}
-	
 	@POST
 	public Response addUser(User user, @Context UriInfo uriInfo) {
 		User newUser = userService.addUser(user);
@@ -54,6 +42,30 @@ public class UserResource {
 					.build();
 	}
 	
+	@GET
+	@Path("/{userId}")
+	public Response getUser(@PathParam("userId") long userId) {
+		return Response.ok(userService.getUser(userId))
+					.build();
+	}
+	
+	@PUT
+	@Path("/{userId}")	
+	public Response updateUser(@PathParam("userId") long userId, User user) {
+		user.setId(userId);		
+		User updatedUser = userService.updateUser(user);		
+		return Response.ok(updatedUser)
+					.build();		
+	}
+	
+	@DELETE
+	@Path("/{userId}")	
+	public Response deleteUser(@PathParam("userId") long userId) {
+		userService.deleteUser(userId);
+		return Response.noContent()
+					.build();		
+	}
+		
 	@Path("/{userId}/recipes")	
 	public RecipeResource getRecipeResource() {
 		return new RecipeResource();
