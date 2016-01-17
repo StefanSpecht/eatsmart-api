@@ -25,13 +25,13 @@ public class AuthenticationService {
 	private String encodedCredentials;
 	private Map<String,String> decodedCredentials;
 	private User authenticatedUser;
-	private Boolean isAuthenticated;
+	private Boolean authenticated;
 	
 	private static final String USER_PATH_PATTERN = "users\\/(\\d+)($|\\/.*)";
 	
 	public AuthenticationService() {
 		authenticatedUser = null;
-		isAuthenticated = false;
+		authenticated = false;
 	}
 	public User getAuthenticatedUser() {
 		return authenticatedUser;
@@ -85,10 +85,10 @@ public class AuthenticationService {
 			//Check password
 			if (user.getUsername().equals(username) && user.getPassword().equals(password) ) {
 				this.authenticatedUser = user;
-				this.isAuthenticated = true;
+				this.authenticated = true;
 			}
 			else {
-				this.isAuthenticated = false;
+				this.authenticated = false;
 				throw new UnauthorizedException("Authentication failed. Wrong username or password");
 			}
 		}
