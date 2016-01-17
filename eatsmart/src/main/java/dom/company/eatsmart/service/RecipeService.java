@@ -40,10 +40,11 @@ public class RecipeService {
 	public Recipe addRecipe(Recipe recipe, long userId) {
 		
 		EntityManager entityManager = JpaUtil.getEntityManager();
-		User user = entityManager.find(User.class, userId);
+		User user = userService.getUser(userId);
+		User managedUser = entityManager.find(User.class, user.getId());
 		
 		entityManager.getTransaction().begin();
-		user.addRecipe(recipe);
+		managedUser.addRecipe(recipe);
 		entityManager.persist(recipe);
 		entityManager.getTransaction().commit();
 	
