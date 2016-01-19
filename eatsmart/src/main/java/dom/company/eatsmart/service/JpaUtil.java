@@ -14,7 +14,6 @@ public final class JpaUtil {
 		}
 	}
 	
-	private static JpaUtil japUtil = null;
 	private JpaUtil() {
         // Exists only to defeat instantiation.
     }
