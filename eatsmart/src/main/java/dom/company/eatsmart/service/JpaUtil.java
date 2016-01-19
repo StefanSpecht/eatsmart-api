@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class JpaUtil {
+public final class JpaUtil {
 	
 	protected static EntityManagerFactory entityManagerFactory;
 	
@@ -13,6 +13,11 @@ public class JpaUtil {
 			entityManagerFactory = Persistence.createEntityManagerFactory("EatSmart");
 		}
 	}
+	
+	private static JpaUtil japUtil = null;
+	private JpaUtil() {
+        // Exists only to defeat instantiation.
+    }
 
 	public static EntityManager getEntityManager() {
 		return entityManagerFactory.createEntityManager();
