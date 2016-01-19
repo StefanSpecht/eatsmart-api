@@ -74,6 +74,9 @@ public class User {
 	public Boolean isAdmin() {
 		return admin;
 	}
+	public void setAdmin(Boolean admin) {
+		this.admin = admin;
+	}
 	@XmlTransient
 	public List<Recipe> getRecipes() {
 		return recipes;
@@ -95,10 +98,10 @@ public class User {
 	}
 		
 	public void updateUser(User sourceUser) {
-		this.id = sourceUser.getId();
 		this.firstName = sourceUser.getFirstName();
 		this.lastName = sourceUser.getLastName();
 		this.email = sourceUser.getEmail();
+		this.password = sourceUser.getPassword();
 		
 	}
 }

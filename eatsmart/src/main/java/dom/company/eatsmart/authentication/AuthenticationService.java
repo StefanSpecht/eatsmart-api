@@ -107,7 +107,11 @@ public class AuthenticationService {
 		
 		String requestedPath = uriInfo.getPath();
 		
-		//Rule 100: Allow users to access their private data
+		//Rule 100: Allow admins to access any resource
+		if (user.isAdmin())
+			isAuthorized = true;		
+		
+		//Rule 200: Allow users to access their private data
 		if (requestedPath.matches(USER_PATH_PATTERN)) {
 			Pattern pattern = Pattern.compile(USER_PATH_PATTERN);
 			Matcher matcher = pattern.matcher(requestedPath);

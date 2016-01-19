@@ -1,5 +1,6 @@
 package dom.company.eatsmart.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -46,6 +47,7 @@ public class UserService {
 	}
 	
 	public User addUser(User user) {	
+		user.setAdmin(false);
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		entityManager.getTransaction().begin();
 		entityManager.persist(user);
