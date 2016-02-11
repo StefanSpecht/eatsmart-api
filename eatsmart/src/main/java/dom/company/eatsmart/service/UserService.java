@@ -1,5 +1,6 @@
 package dom.company.eatsmart.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.persistence.criteria.Root;
 
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.model.User;
+import dom.company.eatsmart.model.UserRoles;
 
 public class UserService {
 	
@@ -47,7 +49,9 @@ public class UserService {
 	}
 	
 	public User addUser(User user) {	
-		user.setAdmin(false);
+		Collection<UserRoles> coll = new ArrayList<UserRoles>();
+		coll.add(UserRoles.USER);
+		user.setUserRoles(coll);
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		entityManager.getTransaction().begin();
 		entityManager.persist(user);

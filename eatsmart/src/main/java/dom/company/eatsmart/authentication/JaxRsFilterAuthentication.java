@@ -25,7 +25,7 @@ public class JaxRsFilterAuthentication implements ContainerRequestFilter {
 		String authCredentials = containerRequestContext.getHeaderString(AUTHENTICATION_HEADER);
 		UriInfo uriInfo = containerRequestContext.getUriInfo();
 		
-		AuthenticationService authenticationService = new AuthenticationService();
+		/*AuthenticationService authenticationService = new AuthenticationService();
 		
 		authenticationService.authenticate(authCredentials);		
 		User authenticatedUser = authenticationService.getAuthenticatedUser();
@@ -35,7 +35,7 @@ public class JaxRsFilterAuthentication implements ContainerRequestFilter {
 		if (!isUserAuthorized) {
 			throw new UnauthorizedException("You are not authorized to access this resource");
 		}
-		
+		*/
 
 
 	}
