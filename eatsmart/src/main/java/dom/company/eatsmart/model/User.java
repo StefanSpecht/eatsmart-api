@@ -25,25 +25,20 @@ public class User {
 	private long id;
 	@Column(unique=true)
 	private String username;
-	private String firstName;
-	private String lastName;
-	private String password;
 	@Column(unique=true)
 	private String email;
-	//private Boolean admin;
-	@ElementCollection(targetClass = UserRoles.class)
+	private String password;
+	@ElementCollection(targetClass = UserRole.class)
 	@JoinTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
 	@Column(name = "ROLE", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private Collection<UserRoles> userRoles;
+	private Collection<UserRole> userRoles;
+	/*
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "owner")
 	private List<Recipe> recipes;
-	
-	
+	*/	
 	
 	public User() {
-		//this.admin = false;
-		//this.userRoles.add(UserRoles.ADMIN);
 	}
 	
 	public long getId() {
@@ -51,18 +46,6 @@ public class User {
 	}
 	public void setId(long id) {
 		this.id = id;
-	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 	public String getUsername() {
 		return username;
@@ -82,27 +65,33 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	/*
-	public Boolean isAdmin() {
-		return admin;
-	}
-	public void setAdmin(Boolean admin) {
-		this.admin = admin;
-	}
-	*/
+	
+	
 	
 	@XmlTransient
-	public List<Recipe> getRecipes() {
+	/*public List<Recipe> getRecipes() {
 		return recipes;
 	}
-	public Collection<UserRoles> getUserRoles() {
+	*/
+	public Collection<UserRole> getUserRoles() {
 		return userRoles;
 	}
 
-	public void setUserRoles(Collection<UserRoles> userRoles) {
+	public void setUserRoles(Collection<UserRole> userRoles) {
 		this.userRoles = userRoles;
 	}
-
+	public void addUserRole(UserRole userRole) {
+		if (!this.userRoles.contains(userRole)) {
+			this.userRoles.add(userRole);	
+		}
+	}
+	public void removeUserRole(UserRole userRole) {
+		if (this.userRoles.contains(userRole)) {
+			this.userRoles.remove(userRole);	
+		}
+	}
+	
+	/*
 	public void setRecipes(List<Recipe> recipes) {
 		this.recipes = recipes;
 	}
@@ -126,4 +115,5 @@ public class User {
 		this.password = sourceUser.getPassword();
 		
 	}
+	*/
 }
