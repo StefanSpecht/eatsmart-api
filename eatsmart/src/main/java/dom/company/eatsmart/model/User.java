@@ -64,12 +64,10 @@ public class User {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	
-	
-	
+	}	
+	/*
 	@XmlTransient
-	/*public List<Recipe> getRecipes() {
+	public List<Recipe> getRecipes() {
 		return recipes;
 	}
 	*/
