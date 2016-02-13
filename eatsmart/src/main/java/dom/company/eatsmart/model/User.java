@@ -28,6 +28,7 @@ public class User {
 	@Column(unique=true)
 	private String email;
 	private String password;
+	private int horizonInDays;
 	@ElementCollection(targetClass = UserRole.class)
 	@JoinTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
 	@Column(name = "ROLE", nullable = false)
@@ -65,6 +66,15 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}	
+	
+	public int getHorizonInDays() {
+		return horizonInDays;
+	}
+
+	public void setHorizonInDays(int horizonInDays) {
+		this.horizonInDays = horizonInDays;
+	}
+
 	/*
 	@XmlTransient
 	public List<Recipe> getRecipes() {
@@ -105,13 +115,11 @@ public class User {
             recipe.removeOwner();
         }
 	}
-		
+	*/	
 	public void updateUser(User sourceUser) {
-		this.firstName = sourceUser.getFirstName();
-		this.lastName = sourceUser.getLastName();
 		this.email = sourceUser.getEmail();
 		this.password = sourceUser.getPassword();
-		
+		this.horizonInDays = sourceUser.getHorizonInDays();
 	}
-	*/
+	
 }

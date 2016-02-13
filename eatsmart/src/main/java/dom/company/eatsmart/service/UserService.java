@@ -3,6 +3,7 @@ package dom.company.eatsmart.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -13,18 +14,29 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import dom.company.eatsmart.exception.DataNotFoundException;
+import dom.company.eatsmart.model.TokenType;
 import dom.company.eatsmart.model.User;
-import dom.company.eatsmart.model.UserRoles;
+import dom.company.eatsmart.model.UserRole;
 
 public class UserService {
 	
-	public List<User> getUsers() {
-		EntityManager entityManager = JpaUtil.getEntityManager();
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-		TypedQuery<User> typedQuery = entityManager.createQuery(criteriaQuery);
+	public User registerUser(User user) {
+		VerificationTokenService tokenService = new VerificationTokenService();
+		user.setUserRoles(new ArrayList<UserRole>());
+		user.addUserRole(UserRole.USER);
+		user.addUserRole(UserRole.DISABLED);
+		user.setHorizonInDays(14);
 		
-		return typedQuery.getResultList();
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		entityManager.getTransaction().begin();
+		entityManager.persist(user);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		
+		String token = UUID.randomUUID().toString();
+		tokenService.createVerificationToken(user, token, TokenType.REGISTRATION);
+				
+		return user;
 	}
 	
 	public User getUser(long id) {
@@ -33,6 +45,18 @@ public class UserService {
 			throw new DataNotFoundException("User with ID " + id + " not found");
 		}
 		return user;
+	}
+	
+	public User updateUser(User updatedUser) {
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		
+		//User user = this.getUser(updatedUser.getId());
+		User managedUser = entityManager.find(User.class, updatedUser.getId());
+		
+		entityManager.getTransaction().begin();
+		managedUser.updateUser(updatedUser);
+		entityManager.getTransaction().commit();
+		return managedUser;
 	}
 	
 	public User getUser(String username) throws NoResultException {
@@ -48,6 +72,21 @@ public class UserService {
 		return typedQuery.getSingleResult();
 	}
 	
+	
+	/* ---------------*/
+	/*
+	public List<User> getUsers() {
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		TypedQuery<User> typedQuery = entityManager.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
+	
+	
+	
+	
 	public User addUser(User user) {	
 		Collection<UserRoles> coll = new ArrayList<UserRoles>();
 		coll.add(UserRoles.USER);
@@ -60,18 +99,7 @@ public class UserService {
 				
 		return user;
 	}
-	
-	public User updateUser(User updatedUser) {
-		EntityManager entityManager = JpaUtil.getEntityManager();
-		
-		User user = this.getUser(updatedUser.getId());
-		User managedUser = entityManager.find(User.class, user.getId());
-		
-		entityManager.getTransaction().begin();
-		managedUser.updateUser(updatedUser);
-		entityManager.getTransaction().commit();
-		return managedUser;
-	}
+
 	
 	public void deleteUser(long id) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
@@ -83,5 +111,5 @@ public class UserService {
 		entityManager.remove(user);
 		entityManager.getTransaction().commit();
 	}
-	
+	*/
 }

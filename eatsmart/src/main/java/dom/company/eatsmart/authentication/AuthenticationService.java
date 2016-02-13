@@ -18,6 +18,7 @@ import dom.company.eatsmart.exception.CustomIOException;
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.exception.UnauthorizedException;
 import dom.company.eatsmart.model.User;
+import dom.company.eatsmart.model.UserRole;
 import dom.company.eatsmart.service.UserService;
 
 public class AuthenticationService {
@@ -67,8 +68,8 @@ public class AuthenticationService {
 	
 	public void authenticate(String authCredentials) {
 
-		this.authenticated = true;}
-		/*if (authCredentials == null)
+		this.authenticated = true;
+		if (authCredentials == null)
 			throw new UnauthorizedException("Authentication failed. Please provide username and password");
 		
 		try {
@@ -99,7 +100,7 @@ public class AuthenticationService {
 		catch (NoSuchElementException ex) {
 			throw new UnauthorizedException("Authentication failed. Username and password must not be empty");
 		}
-	}*/
+	}
 	
 	public boolean isAuthorized(User user, UriInfo uriInfo) {
 		
@@ -108,11 +109,12 @@ public class AuthenticationService {
 		
 		String requestedPath = uriInfo.getPath();
 		
-		//Rule 100: Allow admins to access any resource
-		//if (user.isAdmin())
-			isAuthorized = true;		
+		//Rule 0010: Allow admins to access any resource
+		if (user.getUserRoles().contains(UserRole.ADMIN))
+			isAuthorized = true;	
 		
-		//Rule 200: Allow users to access their private data
+		
+		//Rule 0020: Allow users to access their private data
 		if (requestedPath.matches(USER_PATH_PATTERN)) {
 			Pattern pattern = Pattern.compile(USER_PATH_PATTERN);
 			Matcher matcher = pattern.matcher(requestedPath);

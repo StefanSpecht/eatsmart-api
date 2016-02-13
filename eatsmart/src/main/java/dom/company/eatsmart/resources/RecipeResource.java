@@ -21,11 +21,11 @@ import javax.ws.rs.core.UriInfo;
 import dom.company.eatsmart.model.Recipe;
 import dom.company.eatsmart.service.RecipeService;
 
-@Path("/")
+
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class RecipeResource {
-	
+	/*
 	RecipeService recipeService = new RecipeService();
 	
 	@GET
@@ -70,4 +70,5 @@ public class RecipeResource {
 		return Response.noContent()
 					.build();
 	}
+	*/
 }

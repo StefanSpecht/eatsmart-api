@@ -21,7 +21,7 @@ import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.model.User;
 import dom.company.eatsmart.service.UserService;
 
-@Path("/v1")
+@Path("/")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class RootResource {
@@ -33,22 +33,22 @@ public class RootResource {
 				.build();
 	}
 	
-	@Path("/users")
+	@Path("users")
 	public UserResource getUserResource() {
 		return new UserResource();
 	}
 	
-	@Path("/login")
+	@Path("login")
 	public LoginResource getLoginResource() {
 		return new LoginResource();
 	}
 	
-	@Path("/pwdReset")
+	@Path("pwdReset")
 	public PwdResetResource getPwdResetResource() {
 		return new PwdResetResource();
 	}
 	
-	@Path("/foodCatalogue")
+	@Path("foodCatalogue")
 	public FoodCatalogueResource getFoodCatalogueResource() {
 		return new FoodCatalogueResource();
 	}

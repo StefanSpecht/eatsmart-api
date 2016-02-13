@@ -17,6 +17,7 @@ import dom.company.eatsmart.model.User;
 @Provider
 public class JaxRsFilterAuthentication implements ContainerRequestFilter {
 	public static final String AUTHENTICATION_HEADER = "Authorization";
+	private static final String VERIFICATION_PATH_PATTERN = "verification*";
 
 	@Override
 	public void filter(ContainerRequestContext containerRequestContext)
@@ -25,18 +26,36 @@ public class JaxRsFilterAuthentication implements ContainerRequestFilter {
 		String authCredentials = containerRequestContext.getHeaderString(AUTHENTICATION_HEADER);
 		UriInfo uriInfo = containerRequestContext.getUriInfo();
 		
-		/*AuthenticationService authenticationService = new AuthenticationService();
+		//Allow access to free area
+		if (isAuthenticationRequired(uriInfo)) {
 		
-		authenticationService.authenticate(authCredentials);		
-		User authenticatedUser = authenticationService.getAuthenticatedUser();
-		
-		Boolean isUserAuthorized = authenticationService.isAuthorized(authenticatedUser, uriInfo);
-		
-		if (!isUserAuthorized) {
-			throw new UnauthorizedException("You are not authorized to access this resource");
+			AuthenticationService authenticationService = new AuthenticationService();
+			
+			authenticationService.authenticate(authCredentials);		
+			User authenticatedUser = authenticationService.getAuthenticatedUser();
+			
+			Boolean isUserAuthorized = authenticationService.isAuthorized(authenticatedUser, uriInfo);
+			
+			if (!isUserAuthorized) {
+				throw new UnauthorizedException("You are not authorized to access this resource");
+			}
 		}
-		*/
+		
+	}
 
-
+	private boolean isAuthenticationRequired(UriInfo uriInfo) {
+		String requestedPath = uriInfo.getPath();
+		
+		//Allow everybody to access root
+		if (requestedPath.equals("")) return false;
+		
+		//Allow everybody to access user registration
+		if (requestedPath.equals("users")) return false;
+		
+		//Allow everybody to Token verification
+		if (requestedPath.matches(VERIFICATION_PATH_PATTERN)) return false;
+			
+		//in any other case, authentication is required
+		return true;
 	}
 }

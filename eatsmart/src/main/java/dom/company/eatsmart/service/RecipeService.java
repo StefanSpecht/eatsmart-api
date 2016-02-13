@@ -15,7 +15,7 @@ import dom.company.eatsmart.model.Recipe;
 import dom.company.eatsmart.model.User;
 
 public class RecipeService {
-	
+	/*
 	UserService userService = new UserService();
 	
 	public List<Recipe> getRecipes(long userId) {
@@ -78,5 +78,5 @@ public class RecipeService {
 		entityManager.remove(managedRecipe);
 		entityManager.getTransaction().commit();
 	}
-	
+	*/
 }

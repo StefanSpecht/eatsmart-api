@@ -58,7 +58,7 @@ public class Recipe {
 	public User getOwner() {
 		return owner;
 	}
-
+/*
 	public void setOwner(User owner) {
 		this.owner = owner;
 		if (!owner.getRecipes().contains(this)) {
@@ -82,5 +82,6 @@ public class Recipe {
 		this.instruction = sourceRecipe.getInstruction();
 		
 	}
+	*/
 	
 }
