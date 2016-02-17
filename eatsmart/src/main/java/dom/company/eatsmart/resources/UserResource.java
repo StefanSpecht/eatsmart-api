@@ -3,6 +3,7 @@ package dom.company.eatsmart.resources;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -27,7 +28,7 @@ public class UserResource {
 	
 	UserService userService = new UserService();
 	@POST
-	public Response registerUser(User user, @Context UriInfo uriInfo) {
+	public Response registerUser(@Valid User user, @Context UriInfo uriInfo) {
 		User newUser = userService.registerUser(user);
 		String newId = String.valueOf(newUser.getId());
 		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();

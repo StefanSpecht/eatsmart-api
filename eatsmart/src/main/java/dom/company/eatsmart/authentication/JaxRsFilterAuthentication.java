@@ -17,7 +17,7 @@ import dom.company.eatsmart.model.User;
 @Provider
 public class JaxRsFilterAuthentication implements ContainerRequestFilter {
 	public static final String AUTHENTICATION_HEADER = "Authorization";
-	private static final String VERIFICATION_PATH_PATTERN = "verification*";
+	private static final String VERIFICATION_PATH_PATTERN = "verification.+";
 
 	@Override
 	public void filter(ContainerRequestContext containerRequestContext)

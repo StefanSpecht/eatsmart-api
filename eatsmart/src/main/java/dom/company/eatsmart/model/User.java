@@ -15,7 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 public class User {
@@ -23,12 +30,21 @@ public class User {
 	@Id @GeneratedValue
 	@Column(name="USER_ID")
 	private long id;
+	
 	@Column(unique=true)
+	@NotBlank(message = "Username must not be blank or null")
 	private String username;
+	
 	@Column(unique=true)
+	@NotBlank(message = "Email must not be blank or null")
+	@Email(message = "Email syntactically not correct")
 	private String email;
+	
+	@Size(min=5, max=32, message = "Password length must be between 5 and 32 characters")
 	private String password;
+	
 	private int horizonInDays;
+	
 	@ElementCollection(targetClass = UserRole.class)
 	@JoinTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
 	@Column(name = "ROLE", nullable = false)

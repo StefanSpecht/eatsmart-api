@@ -8,7 +8,7 @@ import javax.ws.rs.ext.Provider;
 import dom.company.eatsmart.model.ErrorMessage;
 
 @Provider
-public class DataNotFoundExcpetionMapper implements ExceptionMapper<DataNotFoundException> {
+public class DataNotFoundExceptionMapper implements ExceptionMapper<DataNotFoundException> {
 
 	@Override
 	public Response toResponse(DataNotFoundException ex) {
