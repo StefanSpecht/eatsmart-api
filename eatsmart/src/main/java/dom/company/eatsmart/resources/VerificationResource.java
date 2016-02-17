@@ -25,8 +25,18 @@ public class VerificationResource {
 	public Response verifyRegistrationToken(@PathParam("token") String token, @Context UriInfo uriInfo) {
 		verificationTokenService.verifyRegistrationToken(token, uriInfo);
 		
-		URI badResponse = uriInfo.getBaseUriBuilder().path("../../html/registration/success.html").build();
-		return Response.seeOther(badResponse)
+		URI goodResponse = uriInfo.getBaseUriBuilder().path("../../html/registration/success.html").build();
+		return Response.seeOther(goodResponse)
+				.build();
+	}
+	
+	@Path("pwdResetRequest/{token}")
+	@GET
+	public Response verifyPwdResetToken(@PathParam("token") String token, @Context UriInfo uriInfo) {
+		verificationTokenService.verifyPwdResetToken(token, uriInfo);
+		
+		URI goodResponse = uriInfo.getBaseUriBuilder().path("../../html/pwdResetRequest/success.html").build();
+		return Response.seeOther(goodResponse)
 				.build();
 	}
 }

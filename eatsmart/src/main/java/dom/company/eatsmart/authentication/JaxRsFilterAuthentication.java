@@ -52,6 +52,9 @@ public class JaxRsFilterAuthentication implements ContainerRequestFilter {
 		//Allow everybody to access user registration
 		if (requestedPath.equals("users")) return false;
 		
+		//Allow everybody to submit a password reset request
+		if (requestedPath.equals("pwdResetRequest")) return false;
+		
 		//Allow everybody to Token verification
 		if (requestedPath.matches(VERIFICATION_PATH_PATTERN)) return false;
 			

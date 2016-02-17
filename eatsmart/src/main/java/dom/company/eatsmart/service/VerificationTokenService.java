@@ -1,5 +1,7 @@
 package dom.company.eatsmart.service;
 
+import java.util.Random;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -17,6 +19,10 @@ import dom.company.eatsmart.model.UserRole;
 import dom.company.eatsmart.model.VerificationToken;
 
 public class VerificationTokenService {
+	
+	private static final String PWDGEN_CHAR_LIST = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	private static final int PWDGEN_STRING_LENGTH = 10;
+	
 	
 	public void createVerificationToken (User user, String token, TokenType tokenType) {
 		
@@ -47,7 +53,7 @@ public class VerificationTokenService {
 		try {
 			VerificationToken verificationToken = this.getVerificationToken(token);
 			if (verificationToken.getTokenType() != TokenType.REGISTRATION || verificationToken.isExpired()) {
-				throw new VerificationNotSuccessfulException(uriInfo);
+				throw new VerificationNotSuccessfulException(uriInfo, "registration");
 			}
 			
 			//enable user
@@ -62,7 +68,36 @@ public class VerificationTokenService {
 			
 		}
 		catch(NoResultException ex) {
-			throw new VerificationNotSuccessfulException(uriInfo);
+			throw new VerificationNotSuccessfulException(uriInfo, "registration");
+		}
+	}
+	
+	public void verifyPwdResetToken (String token, UriInfo uriInfo) {
+		try {
+			VerificationToken verificationToken = this.getVerificationToken(token);
+			if (verificationToken.getTokenType() != TokenType.PASSWORD_RESET || verificationToken.isExpired()) {
+				throw new VerificationNotSuccessfulException(uriInfo, "pwdResetRequest");
+			}
+			
+			//generate new Password
+			String newPassword = this.generateRandomString();
+			
+			//reset password
+			EntityManager entityManager = JpaUtil.getEntityManager();
+			User managedUser = entityManager.find(User.class, verificationToken.getUser().getId());
+			entityManager.getTransaction().begin();
+			managedUser.setPassword(newPassword);
+			entityManager.getTransaction().commit();			
+			
+			//send password by mail
+			MailService mailService = new MailService();
+			mailService.sendNewPwdMail(managedUser);
+			//delete token
+			this.deleteVerificationToken(verificationToken.getId());
+			
+		}
+		catch(NoResultException ex) {
+			throw new VerificationNotSuccessfulException(uriInfo, "pwdResetRequest");
 		}
 	}
 	
@@ -77,4 +112,27 @@ public class VerificationTokenService {
 		entityManager.remove(verificationToken);
 		entityManager.getTransaction().commit();
 	}
+	
+	 private String generateRandomString(){
+		 
+		 StringBuffer randStr = new StringBuffer();
+	     
+		 for(int i=0; i<PWDGEN_STRING_LENGTH; i++){
+			 int number = getRandomNumber();
+	            char ch = PWDGEN_CHAR_LIST.charAt(number);
+	            randStr.append(ch);
+	        }
+	        return randStr.toString();
+	 }
+	 
+	 private int getRandomNumber() {
+		 int randomInt = 0;
+	     Random randomGenerator = new Random();
+	     randomInt = randomGenerator.nextInt(PWDGEN_CHAR_LIST.length());
+	     
+	     if (randomInt - 1 == -1) {
+	    	 return randomInt;
+	        }
+	     return randomInt - 1;
+	 }
 }

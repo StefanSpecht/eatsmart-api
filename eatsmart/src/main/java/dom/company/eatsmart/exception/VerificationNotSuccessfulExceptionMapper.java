@@ -16,7 +16,8 @@ public class VerificationNotSuccessfulExceptionMapper implements ExceptionMapper
 
 	@Override
 	public Response toResponse(VerificationNotSuccessfulException ex) {
-		URI badResponse = ex.getUriInfo().getBaseUriBuilder().path("../../html/registration/failed.html").build();
+		
+		URI badResponse = ex.getUriInfo().getBaseUriBuilder().path("../../html/" + ex.getType() + "/failed.html").build();
 		return Response.seeOther(badResponse)
 				.build();
 	}

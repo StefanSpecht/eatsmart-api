@@ -29,7 +29,7 @@ public class UserResource {
 	UserService userService = new UserService();
 	@POST
 	public Response registerUser(@Valid User user, @Context UriInfo uriInfo) {
-		User newUser = userService.registerUser(user);
+		User newUser = userService.registerUser(user, uriInfo);
 		String newId = String.valueOf(newUser.getId());
 		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
 		return Response.created(uri)

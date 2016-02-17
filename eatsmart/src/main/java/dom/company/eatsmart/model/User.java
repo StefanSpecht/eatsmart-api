@@ -43,6 +43,7 @@ public class User {
 	@Size(min=5, max=32, message = "Password length must be between 5 and 32 characters")
 	private String password;
 	
+	@Min(1)
 	private int horizonInDays;
 	
 	@ElementCollection(targetClass = UserRole.class)

@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.core.UriInfo;
 
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.exception.ResourceAlreadyExistsException;
@@ -21,13 +22,15 @@ import dom.company.eatsmart.model.UserRole;
 
 public class UserService {
 	
-	public User registerUser(User user) {
-		//Set standard user settings and disable user
+	public User registerUser(User user, UriInfo uriInfo) {
+		
 		VerificationTokenService tokenService = new VerificationTokenService();
+		MailService mailService = new MailService();
+		
+		//Set standard user settings and disable user
 		user.setUserRoles(new ArrayList<UserRole>());
 		user.addUserRole(UserRole.USER);
 		user.addUserRole(UserRole.DISABLED);
-		user.setHorizonInDays(14);
 		
 		//Check if username is available
 		if (!this.isUsernameAvailable(user.getUsername())) {
@@ -47,6 +50,9 @@ public class UserService {
 		
 		String token = UUID.randomUUID().toString();
 		tokenService.createVerificationToken(user, token, TokenType.REGISTRATION);
+		
+		//send mail
+		mailService.sendRegistrationMail(user, token, uriInfo);
 				
 		return user;
 	}
