@@ -51,7 +51,7 @@ public class MailService {
 	    */
 	    Properties properties = new Properties();
 	    properties.put("mail.smtp.host", host);
-	    properties.put("mail.smtp.starttls.enable","true");
+	    //properties.put("mail.smtp.starttls.enable","true");
 	    properties.put("mail.smtp.auth", "true");
 	    properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
 	    properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
@@ -97,7 +97,7 @@ public void sendPwdResetMail(User user, String token, UriInfo uriInfo) {
 	    Properties properties = new Properties();
 	    properties.put("mail.smtp.host", host);
 	    properties.put("mail.smtp.auth", "true");
-	    properties.put("mail.smtp.starttls.enable","true");
+	    //properties.put("mail.smtp.starttls.enable","true");
 	    properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
 	    properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	    
@@ -137,7 +137,7 @@ public void sendNewPwdMail(User user) {
     Properties properties = new Properties();
     properties.put("mail.smtp.host", host);
     properties.put("mail.smtp.auth", "true");
-    properties.put("mail.smtp.starttls.enable","true");
+    //properties.put("mail.smtp.starttls.enable","true");
     properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
     properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     
