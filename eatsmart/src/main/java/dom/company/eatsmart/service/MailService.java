@@ -16,10 +16,11 @@ import dom.company.eatsmart.model.User;
 
 public class MailService {
 
-	private static final String SMTP_USER = "stefan_specht@gmx.net";
-	private static final String SMTP_PASSWORD = "71388A4557!";
-	private static final String SMTP_HOST = "mail.gmx.net";
-	private static final String SMTP_FROM = "stefan_specht@gmx.net";
+	private static final String SMTP_USER = "noreply@eatsmart.evolution-web.de";
+	private static final String SMTP_PASSWORD = "D0N0t@n$w3r!";
+	private static final String SMTP_HOST = "smtp.evolution-web.de";
+	private static final String SMTP_FROM = "noreply@eatsmart.evolution-web.de";
+	private static final String SMTP_PORT = "25";
 	private static final String REGISTRATION_VERIFICATION_PATH = "verification/registration/";
 	private static final String RESET_VERIFICATION_PATH = "verification/pwdResetRequest/";
 	
@@ -40,8 +41,8 @@ public class MailService {
 	    		+ "<p>Zur Bestätigung der Registrierung, klicke bitte auf folgenden Link: "
 	    		+ "<a href=\"" + uri + "\">Registrierung bestätigen</a> </p>"
 	    		+ "<p>...oder kopiere diese URL in deinen Browser: <br>" + uri +" </p><br>"
-	    		+ "Viel Spaß wünscht <br>"
-	    		+ " - Das EatSmart-Team - ", user.getUsername());
+	    		+ "Viel Spaß & Guten Hunger wünscht <br>"
+	    		+ " - Dein EatSmart-Team - ", user.getUsername());
 	    /*
 	    InternetHeaders headers = new InternetHeaders();
 	    headers.addHeader("Content-type", "text/html; charset=UTF-8");
@@ -50,8 +51,9 @@ public class MailService {
 	    */
 	    Properties properties = new Properties();
 	    properties.put("mail.smtp.host", host);
+	    properties.put("mail.smtp.starttls.enable","true");
 	    properties.put("mail.smtp.auth", "true");
-	    properties.put("mail.smtp.socketFactory.port", "465");
+	    properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
 	    properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	    
 	    Session session = Session.getDefaultInstance(properties, mailAuthenticator);
@@ -85,7 +87,7 @@ public void sendPwdResetMail(User user, String token, UriInfo uriInfo) {
 	    		+ "<a href=\"" + uri + "\">Passwort zurücksetzen</a> </p>"
 	    		+ "<p>...oder kopiere diese URL in deinen Browser: <br>" + uri +" </p><br>"
 	    		+ "Liebe Grüße <br>"
-	    		+ " - Das EatSmart-Team - ", user.getUsername());
+	    		+ " - Dein EatSmart-Team - ", user.getUsername());
 	    /*
 	    InternetHeaders headers = new InternetHeaders();
 	    headers.addHeader("Content-type", "text/html; charset=UTF-8");
@@ -95,7 +97,8 @@ public void sendPwdResetMail(User user, String token, UriInfo uriInfo) {
 	    Properties properties = new Properties();
 	    properties.put("mail.smtp.host", host);
 	    properties.put("mail.smtp.auth", "true");
-	    properties.put("mail.smtp.socketFactory.port", "465");
+	    properties.put("mail.smtp.starttls.enable","true");
+	    properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
 	    properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	    
 	    Session session = Session.getDefaultInstance(properties, mailAuthenticator);
@@ -124,7 +127,7 @@ public void sendNewPwdMail(User user) {
     String htmlBody = String.format("<h1>Hallo %s,</h1>"
     		+ "<p>dein neues Passwort lautet: %s </p>"
     		+ "Liebe Grüße <br>"
-    		+ " - Das EatSmart-Team - ", user.getUsername(), user.getPassword());
+    		+ " - Dein EatSmart-Team - ", user.getUsername(), user.getPassword());
     /*
     InternetHeaders headers = new InternetHeaders();
     headers.addHeader("Content-type", "text/html; charset=UTF-8");
@@ -134,7 +137,8 @@ public void sendNewPwdMail(User user) {
     Properties properties = new Properties();
     properties.put("mail.smtp.host", host);
     properties.put("mail.smtp.auth", "true");
-    properties.put("mail.smtp.socketFactory.port", "465");
+    properties.put("mail.smtp.starttls.enable","true");
+    properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
     properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     
     Session session = Session.getDefaultInstance(properties, mailAuthenticator);
