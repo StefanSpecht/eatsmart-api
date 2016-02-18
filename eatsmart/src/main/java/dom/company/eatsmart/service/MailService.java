@@ -54,7 +54,7 @@ public class MailService {
 	    //properties.put("mail.smtp.starttls.enable","true");
 	    properties.put("mail.smtp.auth", "true");
 	    properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
-	    properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	    //properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	    
 	    Session session = Session.getDefaultInstance(properties, mailAuthenticator);
 	    
@@ -99,7 +99,7 @@ public void sendPwdResetMail(User user, String token, UriInfo uriInfo) {
 	    properties.put("mail.smtp.auth", "true");
 	    //properties.put("mail.smtp.starttls.enable","true");
 	    properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
-	    properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	    //properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	    
 	    Session session = Session.getDefaultInstance(properties, mailAuthenticator);
 	    
@@ -139,7 +139,7 @@ public void sendNewPwdMail(User user) {
     properties.put("mail.smtp.auth", "true");
     //properties.put("mail.smtp.starttls.enable","true");
     properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
-    properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+    //properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     
     Session session = Session.getDefaultInstance(properties, mailAuthenticator);
     
