@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -51,12 +52,12 @@ public class User {
 	@Column(name = "ROLE", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Collection<UserRole> userRoles;
-	/*
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "owner")
-	private List<Recipe> recipes;
-	*/	
+	
+	@OneToOne(targetEntity = RecipeBook.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private RecipeBook recipeBook;
 	
 	public User() {
+		this.recipeBook = new RecipeBook();
 	}
 	
 	public long getId() {
@@ -116,6 +117,14 @@ public class User {
 		}
 	}
 	
+	public RecipeBook getRecipeBook() {
+		return recipeBook;
+	}
+
+	public void setRecipeBook(RecipeBook recipeBook) {
+		this.recipeBook = recipeBook;
+	}
+
 	/*
 	public void setRecipes(List<Recipe> recipes) {
 		this.recipes = recipes;

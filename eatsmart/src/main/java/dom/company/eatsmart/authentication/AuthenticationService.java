@@ -115,14 +115,14 @@ public class AuthenticationService {
 			isAuthorized = true;	
 		
 		
-		//Rule 0020: Allow users to access their private data
+		//Rule 0020: Allow users to access their private data (if they are not disabled)
 		if (requestedPath.matches(USER_PATH_PATTERN)) {
 			Pattern pattern = Pattern.compile(USER_PATH_PATTERN);
 			Matcher matcher = pattern.matcher(requestedPath);
 			if (matcher.find()) {
 				long requestedUserId = Long.parseLong(matcher.group(1));
 			
-				if (requestedUserId == user.getId())
+				if (requestedUserId == user.getId() && user.getUserRoles().contains(UserRole.USER) && !user.getUserRoles().contains(UserRole.DISABLED))
 					isAuthorized = true;		
 			}
 		}

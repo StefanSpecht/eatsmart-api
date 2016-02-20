@@ -55,12 +55,12 @@ public class UserResource {
 				.links(getLinks(uriInfo, "PUT"))
 				.build();		
 	}
-	/*		
+	
 	@Path("/{userId}/recipes")	
 	public RecipeResource getRecipeResource() {
 		return new RecipeResource();
 	}
-	*/
+
 	private Link[] getLinks(UriInfo uriInfo, String method) {
 		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,PUT").build();
 		Link recipes = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/recipes").build()).rel("recipes").param("verb", "GET").build();

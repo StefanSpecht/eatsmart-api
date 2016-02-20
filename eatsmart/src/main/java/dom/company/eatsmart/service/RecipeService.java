@@ -15,7 +15,7 @@ import dom.company.eatsmart.model.Recipe;
 import dom.company.eatsmart.model.User;
 
 public class RecipeService {
-	/*
+	
 	UserService userService = new UserService();
 	
 	public List<Recipe> getRecipes(long userId) {
@@ -24,9 +24,9 @@ public class RecipeService {
 		if (user == null) {
 			throw new DataNotFoundException("User with ID " + userId + " not found");
 		}
-		return user.getRecipes();
+		return user.getRecipeBook().getRecipes();
 	}
-	
+	/*
 	public Recipe getRecipe(long userId, long recipeId) {
 		List<Recipe> allRecipes = this.getRecipes(userId);				
 		List<Recipe> filteredRecipes = allRecipes.stream().filter(r -> r.getId() == recipeId).collect(Collectors.toList());

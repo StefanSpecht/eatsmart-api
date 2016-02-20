@@ -15,19 +15,21 @@ public class Recipe {
 	@Id @GeneratedValue
 	@Column(name="RECIPE_ID")
 	private long id;
+	/*
 	@ManyToOne
 	@JoinColumn(name="USER_ID")
+
 	private User owner;
-	private String title;
-	private String instruction;
-	
+		*/
+	private String name;
+	private byte[] picture;
+	private String prepInstruction;
+	private String prepTime;
+	private int rating;
+	private int servings;
+
 	public Recipe() {
-		
-	}
-	
-	public Recipe(String title, String instruction) {
-	this.title = title;
-	this.instruction = instruction;
+
 	}
 
 	public long getId() {
@@ -37,27 +39,59 @@ public class Recipe {
 	public void setId(long id) {
 		this.id = id;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public byte[] getPicture() {
+		return picture;
+	}
+
+	public void setPicture(byte[] picture) {
+		this.picture = picture;
+	}
+
+	public String getPrepInstruction() {
+		return prepInstruction;
+	}
+
+	public void setPrepInstruction(String prepInstruction) {
+		this.prepInstruction = prepInstruction;
+	}
+
+	public String getPrepTime() {
+		return prepTime;
+	}
+
+	public void setPrepTime(String prepTime) {
+		this.prepTime = prepTime;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
+	public int getServings() {
+		return servings;
+	}
+
+	public void setServings(int servings) {
+		this.servings = servings;
+	}
 	
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getInstruction() {
-		return instruction;
-	}
-
-	public void setInstruction(String instruction) {
-		this.instruction = instruction;
-	}
-
-	@XmlTransient
-	public User getOwner() {
-		return owner;
-	}
+	
+	
+	
+	
 /*
 	public void setOwner(User owner) {
 		this.owner = owner;
