@@ -34,7 +34,7 @@ public class RecipeBook {
 	public void addRecipe(Recipe recipe) {
 		this.recipes.add(recipe);
 		
-		if (!recipe.getRecipeBook().equals(this)) {
+		if (recipe.getRecipeBook() != this) {
 			recipe.setRecipeBook(this);
 		}
 	}
@@ -42,8 +42,8 @@ public class RecipeBook {
 	public void removeRecipe(Recipe recipe) {
 		this.recipes.remove(recipe);
 		
-		if (recipe.getRecipeBook().equals(this)) {
-			recipe.setRecipeBook(null);
+		if (recipe.getRecipeBook() != null) {
+			recipe.removeRecipeBook();
 		}
     }
 

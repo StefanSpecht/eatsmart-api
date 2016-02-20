@@ -63,7 +63,7 @@ public class RecipeResource {
 		String newId = String.valueOf(newRecipe.getId());
 		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
 		return Response.created(uri)
-				.links(getLinks(uriInfo, "GET"))
+				.links(getLinks(uriInfo, "POST"))
 				.entity(newRecipe)
 				.build();
 	}

@@ -97,7 +97,7 @@ public class Recipe {
 	public void setServings(int servings) {
 		this.servings = servings;
 	}
-	
+	@XmlTransient
 	public RecipeBook getRecipeBook() {
 		return recipeBook;
 	}
@@ -115,7 +115,7 @@ public class Recipe {
 			this.recipeBook = null;
 		}
 		if (currentRecipeBook.getRecipes().contains(this)) {
-			currentRecipeBook.getRecipes().remove(this);
+			currentRecipeBook.removeRecipe(this);;
 		}
 	}
 	/*
