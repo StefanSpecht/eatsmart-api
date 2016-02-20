@@ -14,6 +14,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.ws.rs.core.UriInfo;
 
+import dom.company.eatsmart.exception.DataConflictException;
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.exception.ResourceAlreadyExistsException;
 import dom.company.eatsmart.model.TokenType;
@@ -70,6 +71,14 @@ public class UserService {
 		
 		//User user = this.getUser(updatedUser.getId());
 		User managedUser = entityManager.find(User.class, updatedUser.getId());
+		
+		//Validate that username and email didn't change
+		if (!updatedUser.getUsername().equals(managedUser.getUsername())) {
+			throw new DataConflictException("username must not be changed");
+		}
+		if (!updatedUser.getEmail().equals(managedUser.getEmail())) {
+			throw new DataConflictException("username must not be changed");
+		}
 		
 		entityManager.getTransaction().begin();
 		managedUser.updateUser(updatedUser);
@@ -132,22 +141,6 @@ public class UserService {
 		TypedQuery<User> typedQuery = entityManager.createQuery(criteriaQuery);
 		
 		return typedQuery.getResultList();
-	}
-	
-	
-	
-	
-	public User addUser(User user) {	
-		Collection<UserRoles> coll = new ArrayList<UserRoles>();
-		coll.add(UserRoles.USER);
-		user.setUserRoles(coll);
-		EntityManager entityManager = JpaUtil.getEntityManager();
-		entityManager.getTransaction().begin();
-		entityManager.persist(user);
-		entityManager.getTransaction().commit();
-		entityManager.close();
-				
-		return user;
 	}
 
 	

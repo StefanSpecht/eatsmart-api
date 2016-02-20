@@ -134,6 +134,7 @@ public class User {
 	}
 	*/	
 	public void updateUser(User sourceUser) {
+		this.username = sourceUser.getUsername();
 		this.email = sourceUser.getEmail();
 		this.password = sourceUser.getPassword();
 		this.horizonInDays = sourceUser.getHorizonInDays();

@@ -48,10 +48,10 @@ public class UserResource {
 	
 	@PUT
 	@Path("{userId}")	
-	public Response updateUser(@PathParam("userId") long userId, User user, @Context UriInfo uriInfo) {
+	public Response updateUser(@PathParam("userId") long userId, @Valid User user, @Context UriInfo uriInfo) {
 		user.setId(userId);		
-		User updatedUser = userService.updateUser(user);		
-		return Response.ok(updatedUser)
+		userService.updateUser(user);		
+		return Response.noContent()
 				.links(getLinks(uriInfo, "PUT"))
 				.build();		
 	}
