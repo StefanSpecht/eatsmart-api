@@ -37,10 +37,10 @@ public class UserResource {
 					.links(getLinks(uriInfo, "POST"))
 					.build();
 	}
-	/*
+	
 	@Path("{userId}")
 	@GET	
-	public Response getUser(@PathParam("userId") long userId, UriInfo uriInfo) {
+	public Response getUser(@PathParam("userId") long userId, @Context UriInfo uriInfo) {
 		return Response.ok(userService.getUser(userId))
 				.links(getLinks(uriInfo, "GET"))
 				.build();
@@ -48,7 +48,7 @@ public class UserResource {
 	
 	@PUT
 	@Path("{userId}")	
-	public Response updateUser(@PathParam("userId") long userId, User user, UriInfo uriInfo) {
+	public Response updateUser(@PathParam("userId") long userId, User user, @Context UriInfo uriInfo) {
 		user.setId(userId);		
 		User updatedUser = userService.updateUser(user);		
 		return Response.ok(updatedUser)

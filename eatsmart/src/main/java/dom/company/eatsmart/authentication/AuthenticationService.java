@@ -29,6 +29,7 @@ public class AuthenticationService {
 	private Boolean authenticated;
 	
 	private static final String USER_PATH_PATTERN = "users\\/(\\d+)($|\\/.*)";
+	private static final String LOGIN_PATH_PATTERN = "login";
 	
 	public AuthenticationService() {
 		authenticatedUser = null;
@@ -123,6 +124,15 @@ public class AuthenticationService {
 			
 				if (requestedUserId == user.getId())
 					isAuthorized = true;		
+			}
+		}
+		
+		//Rule 0030: Allow everybody to login
+		if (requestedPath.matches(LOGIN_PATH_PATTERN)) {
+			Pattern pattern = Pattern.compile(LOGIN_PATH_PATTERN);
+			Matcher matcher = pattern.matcher(requestedPath);
+			if (matcher.find()) {
+				isAuthorized = true;		
 			}
 		}
 		
