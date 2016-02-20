@@ -12,8 +12,8 @@ public class DataConflictExceptionMapper implements ExceptionMapper<DataConflict
 
 	@Override
 	public Response toResponse(DataConflictException ex) {
-		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 404);
-		return Response.status(Status.NOT_FOUND)
+		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 409);
+		return Response.status(Status.CONFLICT)
 				.entity(errorMessage)
 				.build();
 	}
