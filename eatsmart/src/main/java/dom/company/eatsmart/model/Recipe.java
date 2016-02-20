@@ -1,11 +1,15 @@
 package dom.company.eatsmart.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -37,7 +41,12 @@ public class Recipe {
 	private int rating;
 	@Range(min=1, max=128, message="Number of servings must be between 1 and 128")
 	private int servings;
-
+	
+	@ElementCollection(targetClass = Ingredient.class)
+	@JoinTable(name = "RECIPE_INGREDIENTS", joinColumns = @JoinColumn(name = "RECIPE_ID"))
+	@Column(name = "INGREDIENT", nullable = true)
+	private List<Ingredient> ingredients;
+	
 	public Recipe() {
 
 	}
