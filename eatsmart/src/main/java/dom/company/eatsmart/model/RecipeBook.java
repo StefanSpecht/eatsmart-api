@@ -16,12 +16,36 @@ public class RecipeBook {
 	@Id @GeneratedValue
 	private long id;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(nullable = false, name = "USER_ID")
+	@OneToMany(targetEntity = Recipe.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	//@JoinColumn(nullable = false, name = "RECIPEBOOK_ID")
 	private List<Recipe> recipes;
 
 	public RecipeBook() {
 	}
+	
+	public long getId() {
+		return id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	public void addRecipe(Recipe recipe) {
+		this.recipes.add(recipe);
+		
+		if (!recipe.getRecipeBook().equals(this)) {
+			recipe.setRecipeBook(this);
+		}
+	}
+	
+	public void removeRecipe(Recipe recipe) {
+		this.recipes.remove(recipe);
+		
+		if (recipe.getRecipeBook().equals(this)) {
+			recipe.setRecipeBook(null);
+		}
+    }
 
 	public List<Recipe> getRecipes() {
 		return recipes;
@@ -31,7 +55,6 @@ public class RecipeBook {
 		this.recipes = recipes;
 	}
 	
-	
-	
+		
 	
 }

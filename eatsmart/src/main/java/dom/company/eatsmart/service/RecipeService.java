@@ -12,6 +12,7 @@ import javax.persistence.criteria.Root;
 
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.model.Recipe;
+import dom.company.eatsmart.model.RecipeBook;
 import dom.company.eatsmart.model.User;
 
 public class RecipeService {
@@ -26,7 +27,7 @@ public class RecipeService {
 		}
 		return user.getRecipeBook().getRecipes();
 	}
-	/*
+	
 	public Recipe getRecipe(long userId, long recipeId) {
 		List<Recipe> allRecipes = this.getRecipes(userId);				
 		List<Recipe> filteredRecipes = allRecipes.stream().filter(r -> r.getId() == recipeId).collect(Collectors.toList());
@@ -41,16 +42,16 @@ public class RecipeService {
 		
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		User user = userService.getUser(userId);
-		User managedUser = entityManager.find(User.class, user.getId());
+		RecipeBook managedRecipeBook = entityManager.find(RecipeBook.class, user.getRecipeBook().getId());
 		
 		entityManager.getTransaction().begin();
-		managedUser.addRecipe(recipe);
-		entityManager.persist(recipe);
+		managedRecipeBook.addRecipe(recipe);
+		//entityManager.persist(marecipeBook);
 		entityManager.getTransaction().commit();
 	
 		return recipe;
 	}
-	
+	/*
 	public Recipe updateRecipe(long userId, Recipe updatedRecipe) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		

@@ -7,7 +7,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 @Entity
 public class Recipe {
@@ -15,17 +23,19 @@ public class Recipe {
 	@Id @GeneratedValue
 	@Column(name="RECIPE_ID")
 	private long id;
-	/*
+	
 	@ManyToOne
-	@JoinColumn(name="USER_ID")
+	@JoinColumn(name="RECIPEBOOK_ID")
+	private RecipeBook recipeBook;
 
-	private User owner;
-		*/
+	@NotBlank(message="Recipe name must not be blank or null")
 	private String name;
 	private byte[] picture;
 	private String prepInstruction;
 	private String prepTime;
+	@Range(min=0, max=5, message="Rating must be between 0 and 5")
 	private int rating;
+	@Range(min=1, max=128, message="Number of servings must be between 1 and 128")
 	private int servings;
 
 	public Recipe() {
@@ -88,27 +98,27 @@ public class Recipe {
 		this.servings = servings;
 	}
 	
-	
-	
-	
-	
-/*
-	public void setOwner(User owner) {
-		this.owner = owner;
-		if (!owner.getRecipes().contains(this)) {
-			owner.getRecipes().add(this);
+	public RecipeBook getRecipeBook() {
+		return recipeBook;
+	}
+
+	public void setRecipeBook(RecipeBook recipeBook) {
+		this.recipeBook = recipeBook;
+		if (!recipeBook.getRecipes().contains(this)) {
+			recipeBook.getRecipes().add(this);
 		}
 	}
-	public void removeOwner() {
+	public void removeRecipeBook() {
 		
-		User currentOwner = this.getOwner();
-		if (currentOwner != null){
-			this.owner = null;
+		RecipeBook currentRecipeBook = this.getRecipeBook();
+		if (currentRecipeBook != null){
+			this.recipeBook = null;
 		}
-		if (currentOwner.getRecipes().contains(this)) {
-			currentOwner.getRecipes().remove(this);
+		if (currentRecipeBook.getRecipes().contains(this)) {
+			currentRecipeBook.getRecipes().remove(this);
 		}
 	}
+	/*
 	public void updateRecipe(Recipe sourceRecipe) {
 		this.id = sourceRecipe.getId();
 		this.owner = sourceRecipe.getOwner();

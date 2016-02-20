@@ -117,6 +117,7 @@ public class User {
 		}
 	}
 	
+	@XmlTransient
 	public RecipeBook getRecipeBook() {
 		return recipeBook;
 	}
@@ -125,23 +126,7 @@ public class User {
 		this.recipeBook = recipeBook;
 	}
 
-	/*
-	public void setRecipes(List<Recipe> recipes) {
-		this.recipes = recipes;
-	}
-	public void addRecipe(Recipe recipe) {
-		this.recipes.add(recipe);
-		if (recipe.getOwner() != this) {
-            recipe.setOwner(this);
-        }
-	}
-	public void removeRecipe(Recipe recipe) {
-		this.recipes.remove(recipe);
-		if (recipe.getOwner() != null) {
-            recipe.removeOwner();
-        }
-	}
-	*/	
+		
 	public void updateUser(User sourceUser) {
 		this.username = sourceUser.getUsername();
 		this.email = sourceUser.getEmail();
