@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
 public class Food {
 
@@ -24,11 +26,12 @@ public class Food {
 	@Column(name="FOOD_ID")
 	private long id;
 	
+	@NotBlank
 	private String name;
 	
 	private long weightPerUnit;
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name="PARENT_ID")
 	private Food parentFood;
 	
@@ -106,8 +109,6 @@ public class Food {
 				food.setParentFood(null);
 			}
 		}
-		
-		
 		
 	}
 	
