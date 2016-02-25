@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
+import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
+import dom.company.eatsmart.exception.DataConflictException;
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.model.Recipe;
 import dom.company.eatsmart.model.RecipeBook;
@@ -39,16 +41,20 @@ public class RecipeService {
 	}
 	
 	public Recipe addRecipe(Recipe recipe, long userId) {
-		
+			
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		User user = userService.getUser(userId);
 		RecipeBook managedRecipeBook = entityManager.find(RecipeBook.class, user.getRecipeBook().getId());
 		
-		entityManager.getTransaction().begin();
-		managedRecipeBook.addRecipe(recipe);
-		//entityManager.persist(marecipeBook);
-		entityManager.getTransaction().commit();
-	
+		try {
+			entityManager.getTransaction().begin();
+			managedRecipeBook.addRecipe(recipe);
+			//entityManager.persist(marecipeBook);
+			entityManager.getTransaction().commit();
+		}
+		catch(RollbackException ex) {
+			throw new DataConflictException("All foods must be added to food catalogue first");
+		}
 		return recipe;
 	}
 	/*

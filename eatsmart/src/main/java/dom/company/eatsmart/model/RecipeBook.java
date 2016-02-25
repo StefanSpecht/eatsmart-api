@@ -1,5 +1,7 @@
 package dom.company.eatsmart.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,10 +19,11 @@ public class RecipeBook {
 	private long id;
 	
 	@OneToMany(targetEntity = Recipe.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	//@JoinColumn(nullable = false, name = "RECIPEBOOK_ID")
+	@JoinColumn(nullable = false, name = "RECIPEBOOK_ID")
 	private List<Recipe> recipes;
 
 	public RecipeBook() {
+		
 	}
 	
 	public long getId() {
@@ -40,11 +43,15 @@ public class RecipeBook {
 	}
 	
 	public void removeRecipe(Recipe recipe) {
-		this.recipes.remove(recipe);
 		
-		if (recipe.getRecipeBook() != null) {
-			recipe.removeRecipeBook();
+		if (this.recipes.contains(this)) {
+			this.recipes.remove(recipe);
+			
+			if (recipe.getRecipeBook().equals(this)) {
+				recipe.removeRecipeBook();
+			}
 		}
+		
     }
 
 	public List<Recipe> getRecipes() {

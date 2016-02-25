@@ -56,8 +56,20 @@ public class User {
 	@OneToOne(targetEntity = RecipeBook.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private RecipeBook recipeBook;
 	
+	@OneToOne(targetEntity = Menu.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Menu menu;
+	
+	@OneToOne(targetEntity = Fridge.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Fridge fridge;
+	
+	@OneToOne(targetEntity = ProductCatalogue.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private ProductCatalogue productCatalogue;
+	
 	public User() {
 		this.recipeBook = new RecipeBook();
+		this.menu = new Menu();
+		this.fridge = new Fridge();
+		this.productCatalogue = new ProductCatalogue();
 	}
 	
 	public long getId() {

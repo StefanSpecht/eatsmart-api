@@ -1,5 +1,6 @@
 package dom.company.eatsmart.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -106,6 +107,7 @@ public class Recipe {
 	public void setServings(int servings) {
 		this.servings = servings;
 	}
+	
 	@XmlTransient
 	public RecipeBook getRecipeBook() {
 		return recipeBook;
@@ -125,6 +127,24 @@ public class Recipe {
 		}
 		if (currentRecipeBook.getRecipes().contains(this)) {
 			currentRecipeBook.removeRecipe(this);;
+		}
+	}
+
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
+	
+	public void addIngredient(Ingredient ingredient) {
+		this.ingredients.add(ingredient);
+	}
+
+	public void removeIngredient(Ingredient ingredient) {
+		if (this.ingredients.contains(ingredient)) {
+			this.ingredients.remove(ingredient);
 		}
 	}
 	/*
