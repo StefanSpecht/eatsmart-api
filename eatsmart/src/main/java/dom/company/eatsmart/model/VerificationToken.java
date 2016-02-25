@@ -26,7 +26,7 @@ public class VerificationToken {
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "USER_ID")
     private User user;     
-    private Date expiryDate;
+    private Timestamp expiryDate;
     @Enumerated(EnumType.STRING)
     private TokenType tokenType;
  
@@ -69,11 +69,11 @@ public class VerificationToken {
 		this.user = user;
 	}
 
-	public Date getExpiryDate() {
+	public Timestamp getExpiryDate() {
 		return expiryDate;
 	}
 
-	public void setExpiryDate(Date expiryDate) {
+	public void setExpiryDate(Timestamp expiryDate) {
 		this.expiryDate = expiryDate;
 	}
 
@@ -85,11 +85,11 @@ public class VerificationToken {
 		this.tokenType = tokenType;
 	}
 
-	private Date calculateExpiryDate(int expiryTimeInMinutes) {
+	private Timestamp calculateExpiryDate(int expiryTimeInMinutes) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Timestamp(cal.getTime().getTime()));
         cal.add(Calendar.MINUTE, expiryTimeInMinutes);
-        return new Date(cal.getTime().getTime());
+        return new Timestamp(cal.getTime().getTime());
     }
 	
 	public boolean isExpired() {
