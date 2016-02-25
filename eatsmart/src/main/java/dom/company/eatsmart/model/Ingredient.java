@@ -8,18 +8,20 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlTransient;
 
-@Embeddable //?
+@Embeddable
 public class Ingredient {
 
 	private long quantityInMg;
+	
 	@Enumerated(EnumType.STRING)
 	private ScaleUnit displayUnit;
-	//@Embedded
+
 	@OneToOne(targetEntity = Food.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "FOOD_ID")
-	@XmlTransient
+	@NotNull
 	private Food food;
 	
 	public Ingredient() {
@@ -34,12 +36,12 @@ public class Ingredient {
 		this.quantityInMg = quantityInMg;
 	}
 
-	public ScaleUnit getScaleUnit() {
+	public ScaleUnit getDisplayUnit() {
 		return displayUnit;
 	}
 
-	public void setScaleUnit(ScaleUnit scaleUnit) {
-		this.displayUnit = scaleUnit;
+	public void setDisplayUnit(ScaleUnit displayUnit) {
+		this.displayUnit = displayUnit;
 	}
 
 	public Food getFood() {
