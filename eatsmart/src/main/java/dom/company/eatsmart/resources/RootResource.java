@@ -57,9 +57,8 @@ public class RootResource {
 		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET").build();
 		Link register = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/users").build()).rel("register").param("verb", "POST").build();
 		Link login = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/login").build()).rel("login").param("verb", "GET").build();
-		Link pwdreset = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/pwdreset").build()).rel("pwdreset").param("verb", "POST").build();
-		Link foodCatalogue = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/foodCatalogue").build()).rel("foodCatalogue").param("verb", "GET").build();
+		Link pwdResetRequest = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/pwdResetRequest").build()).rel("pwdResetRequest").param("verb", "POST").build();
 		
-		return new Link[] {self, register, login, pwdreset, foodCatalogue};
+		return new Link[] {self, register, login, pwdResetRequest};
 	}
 }
