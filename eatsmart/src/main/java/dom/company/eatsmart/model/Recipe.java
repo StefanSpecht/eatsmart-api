@@ -26,7 +26,7 @@ import org.hibernate.validator.constraints.Range;
 @Entity
 public class Recipe {
 	
-	@Id @GeneratedValue
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="RECIPE_ID")
 	private long id;
 	

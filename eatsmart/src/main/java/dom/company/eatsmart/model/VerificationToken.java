@@ -10,6 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -19,7 +20,7 @@ public class VerificationToken {
     private static final int EXPIRATION_REGISTRATION = 60 * 24;
     private static final int EXPIRATION_PWD_RESET = 3* 60 * 24;
  
-    @Id  @GeneratedValue
+    @Id  @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;    
     private String token;   
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
