@@ -30,7 +30,7 @@ public class Food {
 	@Column(name="FOOD_ID")
 	private long id;
 	
-	@NotBlank
+	@NotBlank(message="name must not be blank or null")
 	private String name;
 	
 	private long weightPerUnit;

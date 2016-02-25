@@ -21,7 +21,7 @@ public class Ingredient {
 
 	@OneToOne(targetEntity = Food.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "FOOD_ID")
-	@NotNull
+	@NotNull(message="food must not be null")
 	private Food food;
 	
 	public Ingredient() {
