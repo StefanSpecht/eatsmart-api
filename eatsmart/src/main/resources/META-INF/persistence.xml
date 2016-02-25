@@ -10,6 +10,9 @@
       <class>dom.company.eatsmart.model.RecipeBook</class>
       <class>dom.company.eatsmart.model.Recipe</class>
       <class>dom.company.eatsmart.model.Food</class>
+      <class>dom.company.eatsmart.model.Menu</class>
+      <class>dom.company.eatsmart.model.Fridge</class>
+      <class>dom.company.eatsmart.model.ProductCatalogue</class>
       <properties>
         <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
         <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/eatsmart_db" />
