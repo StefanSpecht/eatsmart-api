@@ -18,8 +18,7 @@ public class RecipeBook {
 	@Id @GeneratedValue
 	private long id;
 	
-	@OneToMany(targetEntity = Recipe.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(nullable = false, name = "RECIPEBOOK_ID")
+	@OneToMany(targetEntity = Recipe.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy="recipeBook")
 	private List<Recipe> recipes = new ArrayList<Recipe>();
 
 	public RecipeBook() {
