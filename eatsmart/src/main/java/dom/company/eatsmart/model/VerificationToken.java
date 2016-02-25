@@ -16,7 +16,8 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class VerificationToken {
-    private static final int EXPIRATION = 60 * 24;
+    private static final int EXPIRATION_REGISTRATION = 60 * 24;
+    private static final int EXPIRATION_PWD_RESET = 3* 60 * 24;
  
     @Id  @GeneratedValue
     private long id;    
@@ -35,7 +36,12 @@ public class VerificationToken {
         this.token = token;
         this.user = user;
         this.tokenType = tokenType;
-        this.expiryDate = calculateExpiryDate(EXPIRATION);	
+        
+        if (tokenType == TokenType.REGISTRATION) {
+        	this.expiryDate = calculateExpiryDate(EXPIRATION_REGISTRATION);
+        }
+        this.expiryDate = calculateExpiryDate(EXPIRATION_PWD_RESET);
+        
     }
     
     public long getId() {
