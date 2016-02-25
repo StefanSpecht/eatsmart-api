@@ -16,7 +16,7 @@ import javax.persistence.JoinTable;
 public class Stock {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="RECIPE_ID")
+	@Column(name="STOCK_ID")
 	private long id;
 	
 	@Embedded
