@@ -47,11 +47,6 @@ public class RootResource {
 	public PwdResetResource getPwdResetResource() {
 		return new PwdResetResource();
 	}
-	
-	@Path("foodCatalogue")
-	public FoodCatalogueResource getFoodCatalogueResource() {
-		return new FoodCatalogueResource();
-	}
 		
 	private Link[] getLinks(UriInfo uriInfo) {
 		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET").build();
