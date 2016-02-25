@@ -105,12 +105,6 @@ public class User {
 		this.horizonInDays = horizonInDays;
 	}
 
-	/*
-	@XmlTransient
-	public List<Recipe> getRecipes() {
-		return recipes;
-	}
-	*/
 	public Collection<UserRole> getUserRoles() {
 		return userRoles;
 	}
@@ -137,8 +131,34 @@ public class User {
 	public void setRecipeBook(RecipeBook recipeBook) {
 		this.recipeBook = recipeBook;
 	}
+	
+	@XmlTransient	
+	public Menu getMenu() {
+		return menu;
+	}
 
-		
+	public void setMenu(Menu menu) {
+		this.menu = menu;
+	}
+	
+	@XmlTransient
+	public Fridge getFridge() {
+		return fridge;
+	}
+
+	public void setFridge(Fridge fridge) {
+		this.fridge = fridge;
+	}
+
+	@XmlTransient
+	public ProductCatalogue getProductCatalogue() {
+		return productCatalogue;
+	}
+
+	public void setProductCatalogue(ProductCatalogue productCatalogue) {
+		this.productCatalogue = productCatalogue;
+	}
+
 	public void updateUser(User sourceUser) {
 		this.username = sourceUser.getUsername();
 		this.email = sourceUser.getEmail();
