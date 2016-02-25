@@ -126,7 +126,7 @@ public class Recipe {
 			this.recipeBook = null;
 		}
 		if (currentRecipeBook.getRecipes().contains(this)) {
-			currentRecipeBook.removeRecipe(this);;
+			currentRecipeBook.removeRecipe(this);
 		}
 	}
 

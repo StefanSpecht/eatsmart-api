@@ -49,7 +49,6 @@ public class RecipeService {
 		try {
 			entityManager.getTransaction().begin();
 			managedRecipeBook.addRecipe(recipe);
-			//entityManager.persist(marecipeBook);
 			entityManager.getTransaction().commit();
 		}
 		catch(RollbackException ex) {
