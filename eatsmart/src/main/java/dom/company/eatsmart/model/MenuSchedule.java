@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlTransient;
@@ -32,6 +33,10 @@ public class MenuSchedule {
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "MENU_ID")
 	private Menu menu;
+	
+	@OneToOne(targetEntity = Recipe.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "RECIPE_ID")
+	Recipe recipe;
 
 	public MenuSchedule() {
 
