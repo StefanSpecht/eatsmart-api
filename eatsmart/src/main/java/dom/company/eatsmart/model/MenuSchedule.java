@@ -18,6 +18,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlTransient;
 
+@Entity
 public class MenuSchedule {
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
