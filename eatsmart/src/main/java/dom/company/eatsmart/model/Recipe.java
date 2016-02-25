@@ -45,7 +45,6 @@ public class Recipe {
 	
 	@ElementCollection(targetClass = Ingredient.class)
 	@JoinTable(name = "RECIPE_INGREDIENTS", joinColumns = @JoinColumn(name = "RECIPE_ID"))
-	@Column(name = "INGREDIENT", nullable = true)
 	private List<Ingredient> ingredients;
 	
 	public Recipe() {
