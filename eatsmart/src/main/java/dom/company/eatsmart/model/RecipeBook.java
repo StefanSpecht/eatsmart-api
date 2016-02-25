@@ -20,7 +20,7 @@ public class RecipeBook {
 	
 	@OneToMany(targetEntity = Recipe.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(nullable = false, name = "RECIPEBOOK_ID")
-	private List<Recipe> recipes;
+	private List<Recipe> recipes = new ArrayList<Recipe>();
 
 	public RecipeBook() {
 		
@@ -51,7 +51,6 @@ public class RecipeBook {
 				recipe.removeRecipeBook();
 			}
 		}
-		
     }
 
 	public List<Recipe> getRecipes() {
