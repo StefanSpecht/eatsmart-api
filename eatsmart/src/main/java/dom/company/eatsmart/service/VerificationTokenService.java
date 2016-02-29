@@ -1,5 +1,8 @@
 package dom.company.eatsmart.service;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 import javax.persistence.EntityManager;
@@ -12,6 +15,7 @@ import javax.persistence.criteria.Root;
 import javax.ws.rs.core.UriInfo;
 
 import dom.company.eatsmart.exception.DataNotFoundException;
+import dom.company.eatsmart.exception.InternalServerErrorException;
 import dom.company.eatsmart.exception.VerificationNotSuccessfulException;
 import dom.company.eatsmart.model.TokenType;
 import dom.company.eatsmart.model.User;
@@ -73,6 +77,9 @@ public class VerificationTokenService {
 	}
 	
 	public void verifyPwdResetToken (String token, UriInfo uriInfo) {
+		
+		String hashAlgorithm = "MD5";
+		String byteEncoding = "UTF-8";
 		try {
 			VerificationToken verificationToken = this.getVerificationToken(token);
 			if (verificationToken.getTokenType() != TokenType.PASSWORD_RESET || verificationToken.isExpired()) {
@@ -82,11 +89,15 @@ public class VerificationTokenService {
 			//generate new Password
 			String newPassword = this.generateRandomString();
 			
+			// hash to MD5
+			MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm);
+			String newPasswordHash = messageDigest.digest(newPassword.getBytes(byteEncoding)).toString();
+			
 			//reset password
 			EntityManager entityManager = JpaUtil.getEntityManager();
 			User managedUser = entityManager.find(User.class, verificationToken.getUser().getId());
 			entityManager.getTransaction().begin();
-			managedUser.setPassword(newPassword);
+			managedUser.setPassword(newPasswordHash);
 			entityManager.getTransaction().commit();			
 			
 			//send password by mail
@@ -98,6 +109,12 @@ public class VerificationTokenService {
 		}
 		catch(NoResultException ex) {
 			throw new VerificationNotSuccessfulException(uriInfo, "pwdResetRequest");
+		}
+		catch (NoSuchAlgorithmException ex) {
+			throw new InternalServerErrorException("Algorithm '" + hashAlgorithm + "' not found");
+		}
+		catch (UnsupportedEncodingException  ex) {
+			throw new InternalServerErrorException("Encoding '" + byteEncoding + "' not supported");
 		}
 	}
 	
