@@ -23,7 +23,7 @@ public class Stock {
 	private long id;
 	
 	@Embedded
-	@NotNull
+	@NotNull(message="ingredient must not be null")
 	private Ingredient ingredient;
 	
 	@ManyToOne
