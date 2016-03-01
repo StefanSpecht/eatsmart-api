@@ -58,15 +58,19 @@ public class User {
 	private Collection<UserRole> userRoles;
 	
 	@OneToOne(targetEntity = RecipeBook.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(nullable=false, name="RECIPEBOOK_ID")
 	private RecipeBook recipeBook;
 	
 	@OneToOne(targetEntity = Menu.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(nullable=false, name="MENU_ID")
 	private Menu menu;
 	
 	@OneToOne(targetEntity = Fridge.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(nullable=false, name="FRIDGE_ID")
 	private Fridge fridge;
 	
 	@OneToOne(targetEntity = ProductCatalogue.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(nullable=false, name="CATALOGUE_ID")
 	private ProductCatalogue productCatalogue;
 	
 	public User() {
