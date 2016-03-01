@@ -20,7 +20,7 @@ public class VerificationToken {
     private static final int EXPIRATION_REGISTRATION = 60 * 24;
     private static final int EXPIRATION_PWD_RESET = 3* 60 * 24;
  
-    @Id  @GeneratedValue(strategy=GenerationType.TABLE)
+    @Id  @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;    
     private String token;   
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
