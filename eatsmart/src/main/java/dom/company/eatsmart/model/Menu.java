@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Menu {
 	
-	@Id @GeneratedValue(strategy=GenerationType.TABLE)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="MENU_ID")
 	private long id;
 	

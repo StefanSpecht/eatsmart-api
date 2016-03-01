@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Fridge {
 
-	@Id @GeneratedValue(strategy=GenerationType.TABLE)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="FRIDGE_ID")
 	private long id;
 	

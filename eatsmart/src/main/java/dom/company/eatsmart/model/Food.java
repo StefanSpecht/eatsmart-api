@@ -26,7 +26,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 public class Food {
 
-	@Id @GeneratedValue(strategy=GenerationType.TABLE)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="FOOD_ID")
 	private long id;
 	

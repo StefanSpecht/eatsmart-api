@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class RecipeBook {
 
-	@Id @GeneratedValue(strategy=GenerationType.TABLE)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
 	@OneToMany(targetEntity = Recipe.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy="recipeBook")

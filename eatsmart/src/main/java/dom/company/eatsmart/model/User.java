@@ -32,7 +32,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 public class User {
 	
-	@Id @GeneratedValue(strategy=GenerationType.TABLE)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="USER_ID")
 	private long id;
 	
