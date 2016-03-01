@@ -1,6 +1,7 @@
 package dom.company.eatsmart.service;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -91,18 +92,20 @@ public class VerificationTokenService {
 			
 			// hash to MD5
 			MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm);
-			String newPasswordHash = messageDigest.digest(newPassword.getBytes(byteEncoding)).toString();
+			//byte[] newPasswordHashBytes = messageDigest.digest(newPassword.getBytes(byteEncoding));
+			messageDigest.update(newPassword.getBytes(byteEncoding),0,newPassword.length());
+			String newPasswordHashString = new BigInteger(1, messageDigest.digest()).toString(16);
 			
 			//reset password
 			EntityManager entityManager = JpaUtil.getEntityManager();
 			User managedUser = entityManager.find(User.class, verificationToken.getUser().getId());
 			entityManager.getTransaction().begin();
-			managedUser.setPassword(newPasswordHash);
+			managedUser.setPassword(newPasswordHashString);
 			entityManager.getTransaction().commit();			
 			
 			//send password by mail
 			MailService mailService = new MailService();
-			mailService.sendNewPwdMail(managedUser);
+			mailService.sendNewPwdMail(managedUser, newPassword);
 			//delete token
 			this.deleteVerificationToken(verificationToken.getId());
 			
