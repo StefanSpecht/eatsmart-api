@@ -116,23 +116,29 @@ public class FoodService {
 public Food addFood(Food food, long userId, long parentFoodId) {
 		
 		EntityManager entityManager = JpaUtil.getEntityManager();
-		User owner = userService.getUser(userId);
 		Food parentFood = this.getFood(userId, parentFoodId);
+		User owner = userService.getUser(userId);
 		
-		food.setParentFood(parentFood);
-		food.setOwner(owner);
+		User managedOwner = entityManager.find(User.class, owner.getId());		
+		Food managedParentFood = entityManager.find(Food.class, parentFood.getId());
 		
+		//food.setParentFood(managedParentFood);
+		food.setOwner(managedOwner);
+		food.setParentFood(managedParentFood);
+		
+		/*
 		if (food.getChildFoods() != null) {
 			food.getChildFoods().forEach((Food childFood) -> {childFood.setParentFood(food);childFood.setOwner(owner);});
 		}
 		if (food.getParentFood() != null) {
 			food.getParentFood().addChildFood(food);
 		}
+		*/
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(food);
 		entityManager.getTransaction().commit();
-	
+		
 		return food;
 	}
 	/*

@@ -99,21 +99,29 @@ public class Food {
 	public void addChildFood(Food food) {
 		this.childFoods.add(food);
 		
-		if (!food.getParentFood().equals(this)) {
-			food.setParentFood(this);
+		try {		
+			if (!food.getParentFood().equals(this)) {
+				food.setParentFood(this);
+			}
+		}
+		catch (NullPointerException ex) {
 		}
 	}
 	
 	public void removeChildFood(Food food) {
-		if (this.childFoods.contains(this)) {
-			
-			this.childFoods.remove(this);
-			
-			if (food.getParentFood().equals(this)) {
-				food.setParentFood(null);
+		
+		try {
+			if (this.childFoods.contains(this)) {
+				
+				this.childFoods.remove(this);
+				
+				if (food.getParentFood().equals(this)) {
+					food.setParentFood(null);
+				}
 			}
 		}
-		
+		catch (NullPointerException ex) {
+		}
 	}
 	
 	public long getId() {
