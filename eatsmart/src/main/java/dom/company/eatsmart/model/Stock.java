@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 public class Stock {
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy=GenerationType.TABLE)
 	@Column(name="STOCK_ID")
 	private long id;
 	
