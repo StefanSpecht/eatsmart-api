@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class ProductCatalogue {
 	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy=GenerationType.TABLE)
 	@Column(name="PRODUCTCATALOGUE_ID")
 	private long id;
 

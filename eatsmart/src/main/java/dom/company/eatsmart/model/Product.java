@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 public class Product {
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy=GenerationType.TABLE)
 	@Column(name="PRODUCT_ID")
 	private long id;
 	
