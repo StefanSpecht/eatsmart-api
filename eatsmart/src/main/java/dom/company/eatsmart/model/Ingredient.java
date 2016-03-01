@@ -19,8 +19,7 @@ public class Ingredient {
 	@Enumerated(EnumType.STRING)
 	private ScaleUnit displayUnit;
 
-	@OneToOne(targetEntity = Food.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "FOOD_ID")
+	@OneToOne (targetEntity = Food.class, fetch = FetchType.EAGER)
 	@NotNull(message="food must not be null")
 	private Food food;
 	
