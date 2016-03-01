@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class Fridge {
@@ -18,6 +20,8 @@ public class Fridge {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="FRIDGE_ID")
 	private long id;
+	
+	private int futureUse;
 	
 	@OneToMany(targetEntity = Stock.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy="fridge")
 	private List<Stock> stocks = new ArrayList<Stock>();
@@ -33,6 +37,15 @@ public class Fridge {
 		this.id = id;
 	}
 
+	@XmlTransient
+	public int getFutureUse() {
+		return futureUse;
+	}
+
+	public void setFutureUse(int futureUse) {
+		this.futureUse = futureUse;
+	}
+	
 	public List<Stock> getStocks() {
 		return stocks;
 	}
@@ -59,7 +72,5 @@ public class Fridge {
 			}
 		}
     }
-	
-	
 	
 }

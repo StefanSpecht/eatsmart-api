@@ -12,12 +12,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class RecipeBook {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
+	
+	private int futureUse;
 	
 	@OneToMany(targetEntity = Recipe.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy="recipeBook")
 	private List<Recipe> recipes = new ArrayList<Recipe>();
@@ -32,6 +35,15 @@ public class RecipeBook {
 	
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	@XmlTransient
+	public int getFutureUse() {
+		return futureUse;
+	}
+
+	public void setFutureUse(int futureUse) {
+		this.futureUse = futureUse;
 	}
 	
 	public void addRecipe(Recipe recipe) {
@@ -60,7 +72,4 @@ public class RecipeBook {
 	public void setRecipes(List<Recipe> recipes) {
 		this.recipes = recipes;
 	}
-	
-		
-	
 }

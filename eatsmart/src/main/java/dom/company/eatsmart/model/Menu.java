@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class Menu {
@@ -18,6 +19,8 @@ public class Menu {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="MENU_ID")
 	private long id;
+	
+	private int futureUse;
 	
 	@OneToMany(targetEntity = MenuSchedule.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy="menu")
 	private List<MenuSchedule> menuSchedules = new ArrayList<MenuSchedule>();
@@ -34,6 +37,15 @@ public class Menu {
 		this.id = id;
 	}
 
+	@XmlTransient
+	public int getFutureUse() {
+		return futureUse;
+	}
+
+	public void setFutureUse(int futureUse) {
+		this.futureUse = futureUse;
+	}
+	
 	public List<MenuSchedule> getMenuSchedules() {
 		return menuSchedules;
 	}
@@ -59,5 +71,5 @@ public class Menu {
 				menuSchedule.removeMenu();
 			}
 		}
-    }
+    }	
 }
