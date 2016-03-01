@@ -36,7 +36,7 @@ public class MailService {
 	    		.path(REGISTRATION_VERIFICATION_PATH + token)
 	    		.build()
 	    		.toString();
-	    String htmlBody = String.format("<h1>Hallo %s,</h1>"
+	    String htmlBody = String.format("<p>Hallo %s,</p>"
 	    		+ "<p>danke für deine Registrierung bei EatSmart! </p>"
 	    		+ "<p>Zur Bestätigung der Registrierung, klicke bitte auf folgenden Link: "
 	    		+ "<a href=\"" + uri + "\">Registrierung bestätigen</a> </p>"
@@ -82,7 +82,7 @@ public void sendPwdResetMail(User user, String token, UriInfo uriInfo) {
 	    		.path(RESET_VERIFICATION_PATH + token)
 	    		.build()
 	    		.toString();
-	    String htmlBody = String.format("<h1>Hallo %s,</h1>"
+	    String htmlBody = String.format("<p>Hallo %s,</p>"
 	    		+ "<p>bitte bestätige das Zurücksetzen deines Passworts durch einen Klick auf folgenden Link: <br>"
 	    		+ "<a href=\"" + uri + "\">Passwort zurücksetzen</a> </p>"
 	    		+ "<p>...oder kopiere diese URL in deinen Browser: <br>" + uri +" </p><br>"
@@ -117,17 +117,17 @@ public void sendPwdResetMail(User user, String token, UriInfo uriInfo) {
 	      	}
 	}
 
-public void sendNewPwdMail(User user) {
+public void sendNewPwdMail(User user, String password) {
 	
     String to = user.getEmail();
     String from = SMTP_FROM;
     String host = SMTP_HOST;
     String subject = "Dein neues Passwort";
     
-    String htmlBody = String.format("<h1>Hallo %s,</h1>"
+    String htmlBody = String.format("<p>Hallo %s,</p>"
     		+ "<p>dein neues Passwort lautet: %s </p>"
     		+ "Liebe Grüße <br>"
-    		+ " - Dein EatSmart-Team - ", user.getUsername(), user.getPassword());
+    		+ " - Dein EatSmart-Team - ", user.getUsername(), password);
     /*
     InternetHeaders headers = new InternetHeaders();
     headers.addHeader("Content-type", "text/html; charset=UTF-8");
