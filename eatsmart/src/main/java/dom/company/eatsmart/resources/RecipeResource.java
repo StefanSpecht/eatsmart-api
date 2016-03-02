@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Link;
@@ -31,8 +32,9 @@ public class RecipeResource {
 	RecipeService recipeService = new RecipeService();
 	
 	@GET
-	public Response getRecipes(@PathParam("userId") long userId, @Context UriInfo uriInfo) {
-		List<Recipe> recipes = recipeService.getRecipes(userId);
+	public Response getRecipes(@PathParam("userId") long userId, @Context UriInfo uriInfo, @QueryParam("qName") String qName, @QueryParam("sort") String sort) {
+		
+		List<Recipe> recipes = recipeService.getRecipes(userId, qName, sort);
 		GenericEntity<List<Recipe>> entity = new GenericEntity<List<Recipe>>(recipes) {};
 		return Response.ok(entity)
 				.links(getLinks(uriInfo, "GET"))

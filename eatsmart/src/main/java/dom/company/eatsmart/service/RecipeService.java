@@ -1,5 +1,6 @@
 package dom.company.eatsmart.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,17 +22,46 @@ public class RecipeService {
 	
 	UserService userService = new UserService();
 	
-	public List<Recipe> getRecipes(long userId) {
+	public List<Recipe> getRecipes(long userId, String qName, String sort) {
 		User user = userService.getUser(userId);
 		
 		if (user == null) {
 			throw new DataNotFoundException("User with ID " + userId + " not found");
 		}
-		return user.getRecipeBook().getRecipes();
+		List<Recipe> recipes = user.getRecipeBook().getRecipes();
+		
+		//filter
+		if (qName != null) {
+			recipes = recipes
+					.stream()
+					.filter(r -> r.getName().matches(qName))
+					.collect(Collectors.toList());
+		}
+		
+		//sort
+		if (sort != null) {
+			switch (sort) {
+				case "name":
+					Collections.sort(recipes, (a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+					break;
+				case "-name":
+					Collections.sort(recipes, (a, b) -> b.getName().compareToIgnoreCase(a.getName()));
+					break;
+				case "-rating":
+					Collections.sort(recipes, (a, b) -> b.getRating() < a.getRating() ? -1 : b.getRating() == a.getRating() ? 0 : 1);
+					break;
+				default:
+					Collections.sort(recipes, (a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+			}
+		}
+		else {
+			Collections.sort(recipes, (a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+		}
+		return recipes;				
 	}
 	
 	public Recipe getRecipe(long userId, long recipeId) {
-		List<Recipe> allRecipes = this.getRecipes(userId);				
+		List<Recipe> allRecipes = this.getRecipes(userId, null, null);				
 		List<Recipe> filteredRecipes = allRecipes.stream().filter(r -> r.getId() == recipeId).collect(Collectors.toList());
 		
 		if (filteredRecipes.isEmpty()) {		
