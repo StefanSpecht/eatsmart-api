@@ -66,26 +66,6 @@ public class UserService {
 		return user;
 	}
 	
-	public User updateUser(User updatedUser) {
-		EntityManager entityManager = JpaUtil.getEntityManager();
-		
-		//User user = this.getUser(updatedUser.getId());
-		User managedUser = entityManager.find(User.class, updatedUser.getId());
-		
-		//Validate that username and email didn't change
-		if (!updatedUser.getUsername().equals(managedUser.getUsername())) {
-			throw new DataConflictException("username must not be changed");
-		}
-		if (!updatedUser.getEmail().equals(managedUser.getEmail())) {
-			throw new DataConflictException("username must not be changed");
-		}
-		
-		entityManager.getTransaction().begin();
-		managedUser.updateUser(updatedUser);
-		entityManager.getTransaction().commit();
-		return managedUser;
-	}
-	
 	public User getUser(String username) throws NoResultException {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -99,6 +79,26 @@ public class UserService {
 		return typedQuery.getSingleResult();
 	}
 	
+	public User updateUser(User updatedUser) {
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		
+		//User user = this.getUser(updatedUser.getId());
+		User managedUser = entityManager.find(User.class, updatedUser.getId());
+		
+		//Validate that username and email didn't change
+		if (!updatedUser.getUsername().equals(managedUser.getUsername())) {
+			throw new DataConflictException("username must not be changed");
+		}
+		if (!updatedUser.getEmail().equals(managedUser.getEmail())) {
+			throw new DataConflictException("email must not be changed");
+		}
+		
+		entityManager.getTransaction().begin();
+		managedUser.updateUser(updatedUser);
+		entityManager.getTransaction().commit();
+		return managedUser;
+	}
+
 	public boolean isUsernameAvailable(String username){
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -131,28 +131,4 @@ public class UserService {
 		return false;
 	}
 	
-	
-	/* ---------------*/
-	/*
-	public List<User> getUsers() {
-		EntityManager entityManager = JpaUtil.getEntityManager();
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-		TypedQuery<User> typedQuery = entityManager.createQuery(criteriaQuery);
-		
-		return typedQuery.getResultList();
-	}
-
-	
-	public void deleteUser(long id) {
-		EntityManager entityManager = JpaUtil.getEntityManager();
-		User user = entityManager.find(User.class, id);
-		if (user == null) {
-			throw new DataNotFoundException("User with ID " + id + " not found");
-		}
-		entityManager.getTransaction().begin();
-		entityManager.remove(user);
-		entityManager.getTransaction().commit();
-	}
-	*/
 }
