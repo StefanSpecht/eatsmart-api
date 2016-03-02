@@ -48,7 +48,7 @@ public class RootResource {
 		return new PwdResetResource();
 	}
 	
-	@Path("/verification")
+	@Path("verification")
 	public VerificationResource getVerificationResource() {
 		return new VerificationResource();
 	}
