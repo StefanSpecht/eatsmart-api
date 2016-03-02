@@ -72,11 +72,12 @@ public class UserResource {
 		Link fridgeStocks = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/fridgeStocks").build()).rel("fridgeStocks").param("verb", "GET").build();
 		Link menuSchedules = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/menuSchedules").build()).rel("menuSchedules").param("verb", "GET").build();
 		Link shoppingList = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/shoppingList").build()).rel("shoppingList").param("verb", "GET").build();
+		Link foods = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/foods").build()).rel("foods").param("verb", "GET").build();
 		Link logout = Link.fromUri(uriInfo.getBaseUri()).rel("logout").param("verb", "GET").build();
 		Link next = Link.fromUri(uriInfo.getBaseUri()).rel("next").param("verb", "GET").build();
 		switch (method) {
 			case "GET":
-				return new Link[] {self, recipes, fridgeStocks, menuSchedules, shoppingList, logout};
+				return new Link[] {self, recipes, fridgeStocks, menuSchedules, shoppingList, foods, logout};
 			case "PUT":
 				return new Link[] {self, logout};
 			case "POST":
