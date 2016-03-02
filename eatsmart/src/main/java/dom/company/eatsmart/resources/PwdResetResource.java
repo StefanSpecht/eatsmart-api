@@ -14,7 +14,6 @@ import javax.ws.rs.core.UriInfo;
 import dom.company.eatsmart.model.PwdResetRequest;
 import dom.company.eatsmart.service.PwdResetRequestService;
 
-@Path("/pwdResetRequest")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class PwdResetResource {

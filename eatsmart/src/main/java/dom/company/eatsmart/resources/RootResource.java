@@ -43,11 +43,16 @@ public class RootResource {
 		return new LoginResource();
 	}
 	
-	@Path("pwdReset")
+	@Path("pwdResetRequest")
 	public PwdResetResource getPwdResetResource() {
 		return new PwdResetResource();
 	}
-		
+	
+	@Path("/verification")
+	public VerificationResource getVerificationResource() {
+		return new VerificationResource();
+	}
+	
 	private Link[] getLinks(UriInfo uriInfo) {
 		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET").build();
 		Link register = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("/users").build()).rel("register").param("verb", "POST").build();
