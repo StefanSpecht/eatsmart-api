@@ -113,6 +113,7 @@ public class User {
 		this.horizonInDays = horizonInDays;
 	}
 
+	@XmlTransient
 	public Collection<UserRole> getUserRoles() {
 		return userRoles;
 	}
