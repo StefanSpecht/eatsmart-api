@@ -34,7 +34,7 @@ public class RecipeService {
 		if (qName != null) {
 			recipes = recipes
 					.stream()
-					.filter(r -> r.getName().matches(qName))
+					.filter(recipe -> recipe.getName().matches(qName))
 					.collect(Collectors.toList());
 		}
 		
