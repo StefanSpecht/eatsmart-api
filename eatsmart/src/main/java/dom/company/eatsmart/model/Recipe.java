@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
@@ -46,6 +47,7 @@ public class Recipe {
 	
 	@ElementCollection(targetClass = Ingredient.class)
 	@JoinTable(name = "RECIPE_INGREDIENTS", joinColumns = @JoinColumn(name = "RECIPE_ID"))
+	@Valid
 	private List<Ingredient> ingredients;
 	
 	public Recipe() {
