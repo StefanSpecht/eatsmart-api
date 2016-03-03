@@ -71,15 +71,16 @@ public class RecipeResource {
 				.entity(newRecipe)
 				.build();
 	}
-	/*
+	
 	@DELETE
 	@Path("/{recipeId}")	
 	public Response deleteRecipe(@PathParam("recipeId") long recipeId, @PathParam("userId") long userId, @Context UriInfo uriInfo) {
 		recipeService.deleteRecipe(userId, recipeId);
 		return Response.noContent()
-					.build();
+				.links(getLinks(uriInfo, "DELETE"))
+				.build();
 	}
-	*/
+	
 	private Link[] getLinks(UriInfo uriInfo, String method) {
 		Link self_all = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,POST").build();
 		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,PUT,DELETE").build();
@@ -104,6 +105,8 @@ public class RecipeResource {
 			case "POST":
 				return new Link[] {self_all, user_all, logout};
 			case "PUT":
+				return new Link[] {self, all, user, logout};
+			case "DELETE":
 				return new Link[] {self, all, user, logout};
 			default:
 				return new Link[] {};

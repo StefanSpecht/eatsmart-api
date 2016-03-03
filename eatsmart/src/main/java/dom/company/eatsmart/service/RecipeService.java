@@ -103,7 +103,7 @@ public class RecipeService {
 			throw new DataConflictException("All foods must be added to food catalogue first");
 		}
 	}
-	/*
+	
 	public void deleteRecipe(long userId, long recipeId) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		
@@ -112,11 +112,12 @@ public class RecipeService {
 		
 		Recipe managedRecipe = entityManager.find(Recipe.class, recipe.getId());		
 		User managedUser = entityManager.find(User.class, user.getId());
+		RecipeBook managedRecipeBook = managedUser.getRecipeBook();
 		
 		entityManager.getTransaction().begin();
-		managedUser.removeRecipe(managedRecipe);
+		managedRecipeBook.removeRecipe(managedRecipe);
 		entityManager.remove(managedRecipe);
 		entityManager.getTransaction().commit();
 	}
-	*/
+	
 }
