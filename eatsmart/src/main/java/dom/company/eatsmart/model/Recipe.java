@@ -32,7 +32,7 @@ public class Recipe {
 	private long id;
 	
 	@ManyToOne
-	@JoinColumn(nullable = false, name = "RECIPEBOOK_ID")
+	@JoinColumn(name = "RECIPEBOOK_ID")
 	private RecipeBook recipeBook;
 
 	@NotBlank(message="Recipe name must not be blank or null")

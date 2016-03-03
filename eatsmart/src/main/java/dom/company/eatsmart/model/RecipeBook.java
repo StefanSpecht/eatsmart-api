@@ -56,12 +56,13 @@ public class RecipeBook {
 	
 	public void removeRecipe(Recipe recipe) {
 		
-		if (this.recipes.contains(this)) {
+		if (this.recipes.contains(recipe)) {
 			this.recipes.remove(recipe);
-			
+			/*
 			if (recipe.getRecipeBook().equals(this)) {
 				recipe.removeRecipeBook();
 			}
+			*/
 		}
     }
 

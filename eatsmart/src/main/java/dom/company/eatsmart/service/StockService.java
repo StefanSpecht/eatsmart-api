@@ -134,7 +134,6 @@ public class StockService {
 		
 		entityManager.getTransaction().begin();
 		managedFridge.removeStock(managedStock);
-		entityManager.remove(managedStock);
 		entityManager.getTransaction().commit();
 	}
 	

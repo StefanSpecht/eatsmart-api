@@ -29,7 +29,7 @@ public class Stock {
 	private Ingredient ingredient;
 	
 	@ManyToOne
-	@JoinColumn(nullable = false, name = "FRIDGE_ID")
+	@JoinColumn(name = "FRIDGE_ID")
 	private Fridge fridge;
 
 	public Stock() {

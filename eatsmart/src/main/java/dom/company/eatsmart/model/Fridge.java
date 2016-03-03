@@ -64,12 +64,13 @@ public class Fridge {
 	
 	public void removeStock(Stock stock) {
 		
-		if (this.stocks.contains(this)) {
+		if (this.stocks.contains(stock)) {
 			this.stocks.remove(stock);
-			
+			/*
 			if (stock.getFridge().equals(this)) {
 				stock.removeFridge();
 			}
+			*/
 		}
     }
 	

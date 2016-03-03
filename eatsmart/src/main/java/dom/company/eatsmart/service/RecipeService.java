@@ -136,7 +136,6 @@ public class RecipeService {
 		
 		entityManager.getTransaction().begin();
 		managedRecipeBook.removeRecipe(managedRecipe);
-		entityManager.remove(managedRecipe);
 		entityManager.getTransaction().commit();
 	}
 	
