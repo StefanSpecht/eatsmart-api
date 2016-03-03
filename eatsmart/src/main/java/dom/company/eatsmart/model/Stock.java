@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -24,6 +25,7 @@ public class Stock {
 	
 	@Embedded
 	@NotNull(message="ingredient must not be null")
+	@Valid
 	private Ingredient ingredient;
 	
 	@ManyToOne
@@ -70,6 +72,10 @@ public class Stock {
 		if (currentFridge.getStocks().contains(this)) {
 			currentFridge.removeStock(this);
 		}
+	}
+	
+	public void updateStock(Stock sourceStock) {
+		this.ingredient = sourceStock.getIngredient();
 	}
 	
 	

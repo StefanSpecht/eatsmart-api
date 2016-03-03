@@ -65,6 +65,11 @@ public class UserResource {
 	public FoodResource getFoodResource() {
 		return new FoodResource();
 	}
+	
+	@Path("/{userId}/fridgeStocks")	
+	public StockResource getStockResource() {
+		return new StockResource();
+	}
 
 	private Link[] getLinks(UriInfo uriInfo, String method) {
 		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,PUT").build();
