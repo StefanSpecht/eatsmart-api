@@ -86,20 +86,24 @@ public class RecipeService {
 		}
 		return recipe;
 	}
-	/*
-	public Recipe updateRecipe(long userId, Recipe updatedRecipe) {
-		EntityManager entityManager = JpaUtil.getEntityManager();
-		
-		Recipe recipe = this.getRecipe(userId, updatedRecipe.getId());
-		Recipe managedRecipe = JpaUtil.getEntityManager().find(Recipe.class, recipe.getId());
-		
-		entityManager.getTransaction().begin();
-		managedRecipe.updateRecipe(updatedRecipe);
-		entityManager.getTransaction().commit();
-			
-		return recipe;		
-	}
 	
+	public void updateRecipe(long userId, Recipe updatedRecipe) {
+		
+		Recipe currentRecipe = this.getRecipe(userId, updatedRecipe.getId());
+		
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		Recipe managedCurrentRecipe = entityManager.find(Recipe.class, currentRecipe.getId());
+		
+		try {
+			entityManager.getTransaction().begin();
+			managedCurrentRecipe.updateRecipe(updatedRecipe);
+			entityManager.getTransaction().commit();
+		}
+		catch(RollbackException ex) {
+			throw new DataConflictException("All foods must be added to food catalogue first");
+		}
+	}
+	/*
 	public void deleteRecipe(long userId, long recipeId) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		

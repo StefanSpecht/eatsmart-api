@@ -82,7 +82,6 @@ public class UserService {
 	public User updateUser(User updatedUser) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		
-		//User user = this.getUser(updatedUser.getId());
 		User managedUser = entityManager.find(User.class, updatedUser.getId());
 		
 		//Validate that username and email didn't change

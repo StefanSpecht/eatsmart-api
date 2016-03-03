@@ -147,14 +147,16 @@ public class Recipe {
 			this.ingredients.remove(ingredient);
 		}
 	}
-	/*
+	
 	public void updateRecipe(Recipe sourceRecipe) {
-		this.id = sourceRecipe.getId();
-		this.owner = sourceRecipe.getOwner();
-		this.title = sourceRecipe.getTitle();
-		this.instruction = sourceRecipe.getInstruction();
-		
+		this.name = sourceRecipe.getName();
+		this.ingredients = sourceRecipe.getIngredients();
+		this.picture = sourceRecipe.getPicture();
+		this.prepInstruction = sourceRecipe.getPrepInstruction();
+		this.prepTime = sourceRecipe.getPrepTime();
+		this.rating = sourceRecipe.getRating();
+		this.servings = sourceRecipe.getServings();		
 	}
-	*/
+	
 	
 }

@@ -49,16 +49,17 @@ public class RecipeResource {
 				.links(getLinks(uriInfo, "GET"))
 				.build();
 	}
-	/*
+	
 	@PUT
 	@Path("/{recipeId}")	
-	public Response updateRecipe(@PathParam("userId") long userId, @PathParam("recipeId") long recipeId, Recipe recipe) {
+	public Response updateRecipe(@PathParam("userId") long userId, @PathParam("recipeId") long recipeId, @Valid Recipe recipe, @Context UriInfo uriInfo) {
 		recipe.setId(recipeId);
-		Recipe updatedRecipe = recipeService.updateRecipe(userId, recipe);
-		return Response.ok(updatedRecipe)
-					.build();		
+		recipeService.updateRecipe(userId, recipe);
+		return Response.noContent()
+				.links(getLinks(uriInfo, "PUT"))
+				.build();		
 	}
-	*/
+	
 	
 	@POST
 	public Response addRecipe(@Valid Recipe recipe, @PathParam("userId") long userId, @Context UriInfo uriInfo) {
@@ -81,7 +82,7 @@ public class RecipeResource {
 	*/
 	private Link[] getLinks(UriInfo uriInfo, String method) {
 		Link self_all = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,POST").build();
-		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,PUT").build();
+		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,PUT,DELETE").build();
 		Link all = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("..").build()).rel("all").param("verb", "GET").build();
 		Link findByName = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("qName=").build()).rel("findByName").param("verb", "GET").build();
 		Link sortByNameAsc = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("sort=name").build()).rel("sortByNameAsc").param("verb", "GET").build();
@@ -102,6 +103,8 @@ public class RecipeResource {
 				return new Link[] {self, all, user, logout};
 			case "POST":
 				return new Link[] {self_all, user_all, logout};
+			case "PUT":
+				return new Link[] {self, all, user, logout};
 			default:
 				return new Link[] {};
 		}
