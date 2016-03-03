@@ -14,6 +14,8 @@ import javax.persistence.criteria.Root;
 
 import dom.company.eatsmart.exception.DataConflictException;
 import dom.company.eatsmart.exception.DataNotFoundException;
+import dom.company.eatsmart.model.Food;
+import dom.company.eatsmart.model.Ingredient;
 import dom.company.eatsmart.model.Recipe;
 import dom.company.eatsmart.model.RecipeBook;
 import dom.company.eatsmart.model.User;
@@ -73,6 +75,24 @@ public class RecipeService {
 	public Recipe addRecipe(Recipe recipe, long userId) {
 			
 		EntityManager entityManager = JpaUtil.getEntityManager();
+		
+		List<Ingredient> ingredients = recipe.getIngredients();
+		
+		ingredients.forEach(ingredient -> {
+			Food food = ingredient.getFood();
+			Food managedFood = entityManager.find(Food.class, food.getId());
+			
+			try {
+				if (!food.getName().equals(managedFood.getName()) || food.getWeightPerUnit() != managedFood.getWeightPerUnit()) {
+					throw new DataConflictException("Food not found. Must be added to food catalogue first.");
+				}
+			}
+			catch (NullPointerException ex) {
+				throw new DataConflictException("Food not found. Must be added to food catalogue first.");
+			}
+		
+		});
+		
 		User user = userService.getUser(userId);
 		RecipeBook managedRecipeBook = entityManager.find(RecipeBook.class, user.getRecipeBook().getId());
 		
