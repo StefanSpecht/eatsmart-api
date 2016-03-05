@@ -64,12 +64,9 @@ public class Menu {
 	
 	public void removeMenuSchedule(MenuSchedule menuSchedule) {
 		
-		if (this.menuSchedules.contains(this)) {
+		if (this.menuSchedules.contains(menuSchedule)) {
 			this.menuSchedules.remove(menuSchedule);
 			
-			if (menuSchedule.getMenu().equals(this)) {
-				menuSchedule.removeMenu();
-			}
 		}
     }	
 }
