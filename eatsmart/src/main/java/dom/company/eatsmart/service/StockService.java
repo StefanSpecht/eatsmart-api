@@ -78,19 +78,11 @@ public class StockService {
 			
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		
-		///check if food was passed correctly
-		Food food = stock.getIngredient().getFood();
-		Food managedFood = entityManager.find(Food.class, food.getId());
+		//check if food was passed correctly
+		FoodService foodService = new FoodService();
+		foodService.validateFood(stock.getIngredient().getFood());
 		
-		try {
-			if (!food.getName().equals(managedFood.getName()) || food.getWeightPerUnit() != managedFood.getWeightPerUnit()) {
-				throw new DataConflictException("Food not found. Must be added to food catalogue first.");
-			}
-		}
-		catch (NullPointerException ex) {
-			throw new DataConflictException("Food not found. Must be added to food catalogue first.");
-		}
-		
+		//Get user's (managed) fridge and the the stock to it
 		User user = userService.getUser(userId);
 		Fridge managedFridge = entityManager.find(Fridge.class, user.getFridge().getId());
 		

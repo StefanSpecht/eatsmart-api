@@ -75,11 +75,11 @@ public class RecipeService {
 	public Recipe addRecipe(Recipe recipe, long userId) {
 			
 		EntityManager entityManager = JpaUtil.getEntityManager();
-		
-		List<Ingredient> ingredients = recipe.getIngredients();
-		
+			
 		//Check if food was passed correctly
-		this.validateFoods(recipe);
+		FoodService foodService = new FoodService();
+		List<Ingredient> ingredients = recipe.getIngredients();
+		ingredients.forEach(ingredient -> foodService.validateFood(ingredient.getFood()));
 		
 		User user = userService.getUser(userId);
 		RecipeBook managedRecipeBook = entityManager.find(RecipeBook.class, user.getRecipeBook().getId());
@@ -127,27 +127,44 @@ public class RecipeService {
 		entityManager.getTransaction().commit();
 	}
 	
-	public void validateFoods (Recipe recipe) {
+	public void validateRecipe (Recipe recipe) {
 		
 		EntityManager entityManager = JpaUtil.getEntityManager();
+		FoodService foodService = new FoodService();
+		Recipe managedRecipe = entityManager.find(Recipe.class, recipe.getId());
 		
-		List<Ingredient> ingredients = recipe.getIngredients();
-		
-		//Check if food was passed correctly
-		ingredients.forEach(ingredient -> {
-			Food food = ingredient.getFood();
-			Food managedFood = entityManager.find(Food.class, food.getId());
+		try {
+			if (!recipe.getName().equals(managedRecipe.getName()) 
+					//|| !recipe.getPicture().equals(managedRecipe.getPicture())
+					//|| !recipe.getPrepInstruction().equals(managedRecipe.getPrepInstruction())
+					//|| !recipe.getPrepTime().equals(managedRecipe.getPrepTime())
+					|| recipe.getRating() != managedRecipe.getRating()
+					|| recipe.getServings() != managedRecipe.getServings() ) {
+				throw new DataConflictException("Recipe not found. Must be added to recipe book first.");
+			}
+		}
+		catch (NullPointerException ex) {
+			throw new DataConflictException("Recipe not found. Must be added to recipe book first.");
+		}
 			
-			try {
-				if (!food.getName().equals(managedFood.getName()) || food.getWeightPerUnit() != managedFood.getWeightPerUnit()) {
-					throw new DataConflictException("Food not found. Must be added to food catalogue first.");
-				}
-			}
-			catch (NullPointerException ex) {
-				throw new DataConflictException("Food not found. Must be added to food catalogue first.");
-			}
+		//check ingredients
+		List<Ingredient> ingredients = recipe.getIngredients();
+		List<Ingredient> managedIngredients = managedRecipe.getIngredients();
 		
-		});
+		try {
+			for (int i = 0; i < ingredients.size(); i++) {
+				if (!ingredients.get(i).getDisplayUnit().equals(managedIngredients.get(i).getDisplayUnit())
+						|| ingredients.get(i).getQuantityInMg() != managedIngredients.get(i).getQuantityInMg()
+						) {
+					throw new DataConflictException("Ingredient not found. Must be added to recipe first.");
+				}
+				foodService.validateFood(ingredients.get(i).getFood());
+			}
+		}
+		catch (NullPointerException ex) {
+			throw new DataConflictException("Ingredient not found. Must be added to recipe first.");
+		}
+		
 	}
 	
 }

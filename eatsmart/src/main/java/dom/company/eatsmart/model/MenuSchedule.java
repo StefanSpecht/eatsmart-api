@@ -99,9 +99,10 @@ public class MenuSchedule {
 		this.recipe = recipe;
 	}
 	
-	
-	
-	
-	
+	public void updateMenuSchedule (MenuSchedule sourceMenuSchedule) {
+		this.date = sourceMenuSchedule.getDate();
+		this.servings = sourceMenuSchedule.getServings();
+		this.recipe = sourceMenuSchedule.getRecipe();
+	}
 	
 }

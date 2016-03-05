@@ -11,6 +11,7 @@ import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import dom.company.eatsmart.exception.DataConflictException;
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.model.Food;
 import dom.company.eatsmart.model.Recipe;
@@ -141,6 +142,22 @@ public Food addFood(Food food, long userId, long parentFoodId) {
 		
 		return food;
 	}
+
+	public void validateFood(Food food) {
+		
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		Food managedFood = entityManager.find(Food.class, food.getId());
+		
+		try {
+			if (!food.getName().equals(managedFood.getName()) || food.getWeightPerUnit() != managedFood.getWeightPerUnit()) {
+				throw new DataConflictException("Food not found. Must be added to food catalogue first.");
+			}
+		}
+		catch (NullPointerException ex) {
+			throw new DataConflictException("Food not found. Must be added to food catalogue first.");
+		}
+	}
+	
 	/*
 	public Recipe updateRecipe(long userId, Recipe updatedRecipe) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
