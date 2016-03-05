@@ -78,20 +78,8 @@ public class RecipeService {
 		
 		List<Ingredient> ingredients = recipe.getIngredients();
 		
-		ingredients.forEach(ingredient -> {
-			Food food = ingredient.getFood();
-			Food managedFood = entityManager.find(Food.class, food.getId());
-			
-			try {
-				if (!food.getName().equals(managedFood.getName()) || food.getWeightPerUnit() != managedFood.getWeightPerUnit()) {
-					throw new DataConflictException("Food not found. Must be added to food catalogue first.");
-				}
-			}
-			catch (NullPointerException ex) {
-				throw new DataConflictException("Food not found. Must be added to food catalogue first.");
-			}
-		
-		});
+		//Check if food was passed correctly
+		this.validateFoods(recipe);
 		
 		User user = userService.getUser(userId);
 		RecipeBook managedRecipeBook = entityManager.find(RecipeBook.class, user.getRecipeBook().getId());
@@ -137,6 +125,29 @@ public class RecipeService {
 		entityManager.getTransaction().begin();
 		managedRecipeBook.removeRecipe(managedRecipe);
 		entityManager.getTransaction().commit();
+	}
+	
+	public void validateFoods (Recipe recipe) {
+		
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		
+		List<Ingredient> ingredients = recipe.getIngredients();
+		
+		//Check if food was passed correctly
+		ingredients.forEach(ingredient -> {
+			Food food = ingredient.getFood();
+			Food managedFood = entityManager.find(Food.class, food.getId());
+			
+			try {
+				if (!food.getName().equals(managedFood.getName()) || food.getWeightPerUnit() != managedFood.getWeightPerUnit()) {
+					throw new DataConflictException("Food not found. Must be added to food catalogue first.");
+				}
+			}
+			catch (NullPointerException ex) {
+				throw new DataConflictException("Food not found. Must be added to food catalogue first.");
+			}
+		
+		});
 	}
 	
 }
