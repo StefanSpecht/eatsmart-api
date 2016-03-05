@@ -26,10 +26,10 @@ public class MenuSchedule {
 	@Column(name="MENUSCHEDULE_ID")
 	private long id;
 	
-	@NotNull
+	@NotNull(message="date must not be null")
 	private Date date;
 	
-	@Min(1)
+	@Min(value = 1, message="servings must be equal or greater 1")
 	private int servings;
 	
 	@ManyToOne
