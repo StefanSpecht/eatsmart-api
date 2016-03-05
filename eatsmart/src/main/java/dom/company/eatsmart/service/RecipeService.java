@@ -135,9 +135,6 @@ public class RecipeService {
 		
 		try {
 			if (!recipe.getName().equals(managedRecipe.getName()) 
-					//|| !recipe.getPicture().equals(managedRecipe.getPicture())
-					//|| !recipe.getPrepInstruction().equals(managedRecipe.getPrepInstruction())
-					//|| !recipe.getPrepTime().equals(managedRecipe.getPrepTime())
 					|| recipe.getRating() != managedRecipe.getRating()
 					|| recipe.getServings() != managedRecipe.getServings() ) {
 				throw new DataConflictException("Recipe not found. Must be added to recipe book first.");

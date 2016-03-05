@@ -33,7 +33,7 @@ public class MenuScheduleResource {
 	MenuScheduleService menuScheduleService = new MenuScheduleService();
 	
 	@GET
-	public Response getMenuSchedules(@PathParam("userId") long userId, @Context UriInfo uriInfo, @QueryParam("qStartDate") Date qStartDate, @QueryParam("qStartDate") Date qEndDate) {
+	public Response getMenuSchedules(@PathParam("userId") long userId, @Context UriInfo uriInfo, @QueryParam("qStartDate") Date qStartDate, @QueryParam("qEndDate") Date qEndDate) {
 		
 		List<MenuSchedule> menuSchedules = menuScheduleService.getMenuSchedules(userId, qStartDate, qEndDate);
 		GenericEntity<List<MenuSchedule>> entity = new GenericEntity<List<MenuSchedule>>(menuSchedules) {};

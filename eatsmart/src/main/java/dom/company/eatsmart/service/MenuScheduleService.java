@@ -1,6 +1,7 @@
 package dom.company.eatsmart.service;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,24 +43,37 @@ public class MenuScheduleService {
 		}
 		catch (NullPointerException ex) {
 		}
-				
+
 		List<MenuSchedule> menuSchedules = user.getMenu().getMenuSchedules();
-		
+			
 		//filter by startDate
 		if (startDate != null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(startDate);
+			calendar.add(Calendar.HOUR, 24);
+			Date dateAfter = new Date(calendar.getTimeInMillis());
+			
 			menuSchedules = menuSchedules
 					.stream()
-					.filter(menuSchedule -> (menuSchedule.getDate().equals(startDate) || menuSchedule.getDate().after(startDate)) )
+					.filter(menuSchedule ->  menuSchedule.getDate().after(dateAfter) )
 					.collect(Collectors.toList());
 		}
 		
 		//filter by endDate
-				if (endDate != null) {
-					menuSchedules = menuSchedules
-							.stream()
-							.filter(menuSchedule -> (menuSchedule.getDate().equals(endDate) || menuSchedule.getDate().before(startDate)) )
-							.collect(Collectors.toList());
-				}
+		if (endDate != null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(endDate);
+			calendar.add(Calendar.HOUR, 24);
+			Date dateBefore = new Date(calendar.getTimeInMillis());
+			
+			menuSchedules = menuSchedules
+					.stream()
+					.filter(menuSchedule -> menuSchedule.getDate().before(dateBefore) )
+					.collect(Collectors.toList());
+		}
+		
+		//sort by date
+		Collections.sort(menuSchedules, (a, b) -> b.getDate().getTime() > a.getDate().getTime() ? -1 : b.getDate().getTime() == a.getDate().getTime() ? 0 : 1);
 				
 		return menuSchedules;
 	}
@@ -98,6 +112,10 @@ public class MenuScheduleService {
 	}
 	
 	public void updateMenuSchedule(long userId, MenuSchedule updatedMenuSchedule) {
+		
+		//validate recipe
+		RecipeService recipeService = new RecipeService();
+		recipeService.validateRecipe(updatedMenuSchedule.getRecipe());
 		
 		MenuSchedule currentMenuSchedule = this.getMenuSchedule(userId, updatedMenuSchedule.getId());
 		
