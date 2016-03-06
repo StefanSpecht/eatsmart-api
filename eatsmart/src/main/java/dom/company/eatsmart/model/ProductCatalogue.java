@@ -63,12 +63,9 @@ public class ProductCatalogue {
 	
 	public void removeProduct(Product product) {
 		
-		if (this.products.contains(this)) {
+		if (this.products.contains(product)) {
 			this.products.remove(product);
 			
-			if (product.getProductCatalogue().equals(this)) {
-				product.removeProductCatalogue();
-			}
 		}
     }
 	
