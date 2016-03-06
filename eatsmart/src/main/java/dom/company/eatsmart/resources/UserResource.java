@@ -75,6 +75,11 @@ public class UserResource {
 	public MenuScheduleResource getMenuScheduleResource() {
 		return new MenuScheduleResource();
 	}
+	
+	@Path("/{userId}/products")	
+	public ProductResource getProductResource() {
+		return new ProductResource();
+	}
 
 	private Link[] getLinks(UriInfo uriInfo, String method) {
 		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,PUT").build();

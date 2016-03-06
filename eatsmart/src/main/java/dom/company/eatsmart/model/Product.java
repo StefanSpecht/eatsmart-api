@@ -8,7 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -24,10 +26,11 @@ public class Product {
 	
 	@Embedded
 	@NotNull(message="ingredient must not be null")
+	@Valid
 	private Ingredient ingredient;
 	
 	@ManyToOne
-	@JoinColumn(nullable = false, name = "CATALOGUE_ID")
+	@JoinColumn(name = "CATALOGUE_ID")
 	private ProductCatalogue productCatalogue;
 
 	public Product() {
@@ -57,7 +60,8 @@ public class Product {
 	public void setIngredient(Ingredient ingredient) {
 		this.ingredient = ingredient;
 	}
-
+	
+	@XmlTransient
 	public ProductCatalogue getProductCatalogue() {
 		return productCatalogue;
 	}
@@ -79,6 +83,11 @@ public void removeProductCatalogue() {
 			currentProductCatalogue.removeProduct(this);
 		}
 	}
+
+public void updateProduct(Product sourceProduct) {
+	this.ean = sourceProduct.getEan();
+	this.ingredient = sourceProduct.getIngredient();
+}
 	
 	
 	
