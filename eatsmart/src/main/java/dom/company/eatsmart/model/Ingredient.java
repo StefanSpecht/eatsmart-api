@@ -37,6 +37,17 @@ public class Ingredient {
 	public void setQuantityInMg(long quantityInMg) {
 		this.quantityInMg = quantityInMg;
 	}
+	
+	public void addQuantityInMg(long quantityInMg) {
+		this.quantityInMg += quantityInMg;
+	}
+	
+	public void removeQuantityInMg(long quantityInMg) {
+		this.quantityInMg -= quantityInMg;
+		if (this.quantityInMg < 0) {
+			this.quantityInMg = 0;
+		}
+	}
 
 	public ScaleUnit getDisplayUnit() {
 		return displayUnit;
