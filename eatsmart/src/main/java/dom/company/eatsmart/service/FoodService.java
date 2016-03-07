@@ -1,5 +1,6 @@
 package dom.company.eatsmart.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ import javax.persistence.criteria.Root;
 
 import dom.company.eatsmart.exception.DataConflictException;
 import dom.company.eatsmart.exception.DataNotFoundException;
+import dom.company.eatsmart.exception.ResourceAlreadyExistsException;
 import dom.company.eatsmart.model.Food;
 import dom.company.eatsmart.model.Recipe;
 import dom.company.eatsmart.model.RecipeBook;
@@ -100,6 +102,11 @@ public class FoodService {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		User owner = userService.getUser(userId);
 		food.setOwner(owner);
+		
+		if (!this.isNameAvailable(food.getName(), userId)) {
+			throw new ResourceAlreadyExistsException("Foodname already in use");
+		}
+		
 		if (food.getChildFoods() != null) {
 			food.getChildFoods().forEach((Food childFood) -> {childFood.setParentFood(food);childFood.setOwner(owner);});
 		}
@@ -122,6 +129,11 @@ public Food addFood(Food food, long userId, long parentFoodId) {
 		
 		User managedOwner = entityManager.find(User.class, owner.getId());		
 		Food managedParentFood = entityManager.find(Food.class, parentFood.getId());
+		
+		//check if food name is available
+		if (!this.isNameAvailable(food.getName(), userId)) {
+			throw new ResourceAlreadyExistsException("Foodname already in use");
+		}
 		
 		//food.setParentFood(managedParentFood);
 		food.setOwner(managedOwner);
@@ -158,33 +170,23 @@ public Food addFood(Food food, long userId, long parentFoodId) {
 		}
 	}
 	
-	/*
-	public Recipe updateRecipe(long userId, Recipe updatedRecipe) {
+	public boolean isNameAvailable(String name, long userId){
 		EntityManager entityManager = JpaUtil.getEntityManager();
+		User owner = entityManager.find(User.class, userId);
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Food> criteriaQuery = criteriaBuilder.createQuery(Food.class);
 		
-		Recipe recipe = this.getRecipe(userId, updatedRecipe.getId());
-		Recipe managedRecipe = JpaUtil.getEntityManager().find(Recipe.class, recipe.getId());
+		Root<Food> root=criteriaQuery.from(Food.class);
+		List<Predicate> wherePredicates = new ArrayList();
+		wherePredicates.add(criteriaBuilder.equal(root.<Food>get("owner"),owner));
+		wherePredicates.add(criteriaBuilder.equal(root.<Food>get("name"),name));
+
+		CriteriaQuery<Food> whereQuery = criteriaQuery.select(root).where(wherePredicates.toArray(new Predicate[]{}));
+		TypedQuery<Food> typedQuery = entityManager.createQuery(whereQuery);
 		
-		entityManager.getTransaction().begin();
-		managedRecipe.updateRecipe(updatedRecipe);
-		entityManager.getTransaction().commit();
-			
-		return recipe;		
+		if (typedQuery.getResultList().isEmpty()) {
+			return true;
+		}
+		return false;
 	}
-	
-	public void deleteRecipe(long userId, long recipeId) {
-		EntityManager entityManager = JpaUtil.getEntityManager();
-		
-		Recipe recipe = this.getRecipe(userId, recipeId);
-		User user = userService.getUser(userId);
-		
-		Recipe managedRecipe = entityManager.find(Recipe.class, recipe.getId());		
-		User managedUser = entityManager.find(User.class, user.getId());
-		
-		entityManager.getTransaction().begin();
-		managedUser.removeRecipe(managedRecipe);
-		entityManager.remove(managedRecipe);
-		entityManager.getTransaction().commit();
-	}
-	*/
 }
