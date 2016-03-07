@@ -69,4 +69,8 @@ public class Menu {
 			
 		}
     }	
+	
+	public void removeMenuSchedules(List<MenuSchedule> menuSchedulesToRemove) {
+		menuSchedules.removeIf(schedule -> menuSchedulesToRemove.contains(schedule));
+	}
 }

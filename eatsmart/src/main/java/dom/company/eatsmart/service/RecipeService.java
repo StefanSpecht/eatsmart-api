@@ -16,6 +16,8 @@ import dom.company.eatsmart.exception.DataConflictException;
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.model.Food;
 import dom.company.eatsmart.model.Ingredient;
+import dom.company.eatsmart.model.Menu;
+import dom.company.eatsmart.model.MenuSchedule;
 import dom.company.eatsmart.model.Recipe;
 import dom.company.eatsmart.model.RecipeBook;
 import dom.company.eatsmart.model.User;
@@ -122,7 +124,17 @@ public class RecipeService {
 		User managedUser = entityManager.find(User.class, user.getId());
 		RecipeBook managedRecipeBook = managedUser.getRecipeBook();
 		
+		Menu managedMenu = managedUser.getMenu();
+		
+		List<MenuSchedule> managedMenuSchedules = managedMenu.getMenuSchedules();
+	
+		List<MenuSchedule> filteredMenuSchedule = managedMenuSchedules
+				.stream()
+				.filter(schedule -> schedule.getRecipe().getId() == recipe.getId())
+				.collect(Collectors.toList());
+		
 		entityManager.getTransaction().begin();
+		managedMenu.removeMenuSchedules(filteredMenuSchedule);
 		managedRecipeBook.removeRecipe(managedRecipe);
 		entityManager.getTransaction().commit();
 	}
