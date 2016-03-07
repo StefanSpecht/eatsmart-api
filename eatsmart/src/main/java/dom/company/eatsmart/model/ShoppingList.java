@@ -1,6 +1,8 @@
 package dom.company.eatsmart.model;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +31,9 @@ import dom.company.eatsmart.service.RecipeService;
 public class ShoppingList {
 
 	private User user;
-	private List<Ingredient> consolidatedRecipeIngredients = new ArrayList();
-	private List<Ingredient> consolidatedStockIngredients = new ArrayList();
-	private List<Ingredient> shoppingListItems = new ArrayList();
+	private List<Ingredient> consolidatedRecipeIngredients = new ArrayList<Ingredient>();
+	private List<Ingredient> consolidatedStockIngredients = new ArrayList<Ingredient>();
+	private List<Ingredient> shoppingListItems = new ArrayList<Ingredient>();
 
 	public ShoppingList(long userId) {
 		
@@ -60,16 +62,54 @@ public class ShoppingList {
 	private void updateConsolidatedRecipeIngredients() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		User user = entityManager.find(User.class, this.user.getId());
-		List<Ingredient> newConsolidatedRecipeIngredients = new ArrayList();
+		List<Ingredient> newConsolidatedRecipeIngredients = new ArrayList<Ingredient>();
 		
-		List<Recipe> recipes = user.getRecipeBook().getRecipes();
-		List<Ingredient> ingredients = new ArrayList();
+		List<MenuSchedule> menuSchedules = user.getMenu().getMenuSchedules();
+		menuSchedules.size(); //fetch from jpa
 		
-		recipes.forEach(recipe -> {
-			ingredients.addAll(recipe.getIngredients());			
+		//calculate end date	
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date today = new Date(calendar.getTimeInMillis());
+		calendar.add(Calendar.HOUR, (24 * this.user.getHorizonInDays()));
+		calendar.add(Calendar.HOUR, 24);
+		Date endDate = new Date(calendar.getTimeInMillis());
+		
+		//filter menu schedules	by end date
+		List<Recipe> scheduledRecipes = new ArrayList<Recipe>();
+		menuSchedules = menuSchedules
+				.stream()
+				.filter(schedule -> schedule.getDate().before(endDate))
+				.filter(schedule -> schedule.getDate().after(today))
+				.collect(Collectors.toList());
+		
+		/*Get all recipes that are scheduled before enddate
+		menuSchedules.forEach(schedule -> {
+			scheduledRecipes.add(schedule.getRecipe());
 		});
 		
+		for (MenuSchedule schedule : menuSchedules) {
+			scheduledRecipes.add(schedule.getRecipe());
+		}
+		*/
+		for(int i=0;i<menuSchedules.size();i++) {
+			Recipe currentRecipe = menuSchedules.get(i).getRecipe();
+			scheduledRecipes.add(currentRecipe);
+		}
 		
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
+		for(int i=0;i<scheduledRecipes.size();i++) {
+			List<Ingredient> currentIngredients = scheduledRecipes.get(i).getIngredients();
+			ingredients.addAll(currentIngredients);
+		}
+		/*
+		for (Recipe recipe : scheduledRecipes)  {
+			ingredients.addAll(recipe.getIngredients());
+		}
+		*/
+				
 		Map<Food, List<Ingredient>> ingredientsByFood = ingredients.stream().collect(Collectors.groupingBy(Ingredient::getFood));
 		for (Map.Entry<Food, List<Ingredient>> entry : ingredientsByFood.entrySet() ) {
 			
@@ -92,10 +132,10 @@ public class ShoppingList {
 	private void updateConsolidatedStockIngredients() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		User user = entityManager.find(User.class, this.user.getId());
-		List<Ingredient> newConsolidatedStockIngredients = new ArrayList();
+		List<Ingredient> newConsolidatedStockIngredients = new ArrayList<Ingredient>();
 		
 		List<Stock> fridgeStocks = user.getFridge().getStocks();
-		List<Ingredient> ingredients = new ArrayList();
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
 		
 		fridgeStocks.forEach(stock -> {
 			ingredients.add(stock.getIngredient());			
@@ -129,7 +169,7 @@ public class ShoppingList {
 		
 		this.consolidatedRecipeIngredients.forEach(recipeIngredient -> {
 			List<Ingredient> relatedStockIngredients = this.consolidatedStockIngredients;
-			List<Ingredient> filteredStockIngredients = new ArrayList();
+			List<Ingredient> filteredStockIngredients = new ArrayList<Ingredient>();
 			filteredStockIngredients = relatedStockIngredients
 					.stream()
 					.filter(ingredient -> ingredient.getFood().getId() == recipeIngredient.getFood().getId())

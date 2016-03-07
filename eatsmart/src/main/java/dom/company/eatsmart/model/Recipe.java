@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,7 +46,7 @@ public class Recipe {
 	@Range(min=1, max=128, message="Number of servings must be between 1 and 128")
 	private int servings;
 	
-	@ElementCollection(targetClass = Ingredient.class)
+	@ElementCollection(targetClass = Ingredient.class, fetch=FetchType.EAGER)
 	@JoinTable(name = "RECIPE_INGREDIENTS", joinColumns = @JoinColumn(name = "RECIPE_ID"))
 	@Valid
 	private List<Ingredient> ingredients;
