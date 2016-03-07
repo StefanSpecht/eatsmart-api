@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlTransient;
@@ -38,6 +39,7 @@ public class MenuSchedule {
 	
 	@OneToOne(targetEntity = Recipe.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "RECIPE_ID")
+	@NotNull(message="Recipe must not be null")
 	Recipe recipe;
 
 	public MenuSchedule() {
