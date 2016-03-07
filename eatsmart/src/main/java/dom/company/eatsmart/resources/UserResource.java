@@ -80,6 +80,11 @@ public class UserResource {
 	public ProductResource getProductResource() {
 		return new ProductResource();
 	}
+	
+	@Path("/{userId}/shoppingList")
+	public ShoppingListResource getShoppingListResource() {
+		return new ShoppingListResource();
+	}
 
 	private Link[] getLinks(UriInfo uriInfo, String method) {
 		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,PUT").build();
