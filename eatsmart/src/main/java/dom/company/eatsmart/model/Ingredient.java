@@ -29,6 +29,12 @@ public class Ingredient {
 	public Ingredient() {
 
 	}
+	
+	public Ingredient(Ingredient sourceIngredient) {
+		this.displayUnit = sourceIngredient.getDisplayUnit();
+		this.food = sourceIngredient.getFood();
+		this.quantityInMg = sourceIngredient.getQuantityInMg();
+	}
 
 	public long getQuantityInMg() {
 		return quantityInMg;

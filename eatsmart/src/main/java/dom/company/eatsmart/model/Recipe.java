@@ -54,6 +54,18 @@ public class Recipe {
 	public Recipe() {
 
 	}
+	
+	public Recipe(Recipe sourceRecipe) {
+		this.id = sourceRecipe.getId();
+		this.recipeBook = sourceRecipe.getRecipeBook();
+		this.name = sourceRecipe.getName();
+		this.ingredients = sourceRecipe.getIngredients();
+		this.picture = sourceRecipe.getPicture();
+		this.prepInstruction = sourceRecipe.getPrepInstruction();
+		this.prepTime = sourceRecipe.getPrepTime();
+		this.rating = sourceRecipe.getRating();
+		this.servings = sourceRecipe.getServings();	
+	}
 
 	public long getId() {
 		return id;
@@ -159,6 +171,24 @@ public class Recipe {
 		this.prepTime = sourceRecipe.getPrepTime();
 		this.rating = sourceRecipe.getRating();
 		this.servings = sourceRecipe.getServings();		
+	}
+	
+	public Recipe scale(int servings) {
+		//Recipe scaledRecipe = this;
+		int currentServings = this.servings;
+		List<Ingredient> scaledIngredients = new ArrayList<Ingredient>();
+		
+		this.ingredients.forEach(ingredient -> {
+			long scaledQuantityInMg = ingredient.getQuantityInMg() / currentServings * servings;
+			Ingredient scaledIngredient = new Ingredient(ingredient);
+			scaledIngredient.setQuantityInMg(scaledQuantityInMg);
+			scaledIngredients.add(scaledIngredient);
+		});
+		
+		Recipe scaledRecipe = new Recipe(this);
+		scaledRecipe.setIngredients(scaledIngredients);
+		
+		return scaledRecipe;
 	}
 	
 	
