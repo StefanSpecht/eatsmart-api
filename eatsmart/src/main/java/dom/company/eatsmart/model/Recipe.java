@@ -180,6 +180,7 @@ public class Recipe {
 		
 		this.ingredients.forEach(ingredient -> {
 			long scaledQuantityInMg = ingredient.getQuantityInMg() / currentServings * servings;
+			
 			Ingredient scaledIngredient = new Ingredient(ingredient);
 			scaledIngredient.setQuantityInMg(scaledQuantityInMg);
 			scaledIngredients.add(scaledIngredient);
@@ -187,6 +188,7 @@ public class Recipe {
 		
 		Recipe scaledRecipe = new Recipe(this);
 		scaledRecipe.setIngredients(scaledIngredients);
+		scaledRecipe.setServings(servings);
 		
 		return scaledRecipe;
 	}

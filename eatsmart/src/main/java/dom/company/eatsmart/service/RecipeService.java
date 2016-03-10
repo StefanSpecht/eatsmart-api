@@ -71,8 +71,19 @@ public class RecipeService {
 		if (filteredRecipes.isEmpty()) {		
 			throw new DataNotFoundException("Recipe with ID " + recipeId + " not found for user with ID " + userId);
 		}
+		
 		return filteredRecipes.get(0);
 	}
+	
+	public Recipe getRecipe(long userId, long recipeId, int servings) {
+		Recipe unscaledRecipe = this.getRecipe(userId, recipeId);
+		if (servings > 0) {
+			return unscaledRecipe.scale(servings);
+		}
+		return unscaledRecipe;
+	}
+	
+	
 	
 	public Recipe addRecipe(Recipe recipe, long userId) {
 			

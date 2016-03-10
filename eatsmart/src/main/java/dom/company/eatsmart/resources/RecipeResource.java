@@ -43,8 +43,8 @@ public class RecipeResource {
 	
 	@GET
 	@Path("/{recipeId}")
-	public Response getRecipe(@PathParam("userId") long userId, @PathParam("recipeId") long recipeId, @Context UriInfo uriInfo) {
-		Recipe recipe = recipeService.getRecipe(userId, recipeId);
+	public Response getRecipe(@PathParam("userId") long userId, @PathParam("recipeId") long recipeId, @Context UriInfo uriInfo, @QueryParam("servings") int servings) {
+		Recipe recipe = recipeService.getRecipe(userId, recipeId, servings);
 		return Response.ok(recipe)
 				.links(getLinks(uriInfo, "GET"))
 				.build();
