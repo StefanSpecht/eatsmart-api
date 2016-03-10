@@ -90,6 +90,7 @@ public class RecipeResource {
 		Link sortByNameDesc = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("sort=-name").build()).rel("sortByNameDesc").param("verb", "GET").build();
 		Link sortByRatingDesc = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("sort=-rating").build()).rel("sortByRatingDesc").param("verb", "GET").build();
 		Link sortBySmartRankingDesc = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("sort=-SmartRanking").build()).rel("sortBySmartRankingDesc").param("verb", "GET").build();
+		Link scale = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("servings=").build()).rel("scale").param("verb", "GET").build();
 		
 		Link newRecipe = Link.fromUri(uriInfo.getAbsolutePath()).rel("new").param("verb", "POST").build();
 		Link user_all = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("..").build()).rel("user").param("verb", "GET").build();
@@ -101,7 +102,7 @@ public class RecipeResource {
 			case "GET_ALL":
 				return new Link[] {self_all, findByName, sortByNameAsc, sortByNameDesc, sortByRatingDesc, sortBySmartRankingDesc, newRecipe, user_all, logout};
 			case "GET":
-				return new Link[] {self, all, user, logout};
+				return new Link[] {self, all, scale, user, logout};
 			case "POST":
 				return new Link[] {self_all, user_all, logout};
 			case "PUT":
