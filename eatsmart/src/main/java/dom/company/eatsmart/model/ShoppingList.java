@@ -85,18 +85,12 @@ public class ShoppingList {
 				.filter(schedule -> schedule.getDate().after(today))
 				.collect(Collectors.toList());
 		
-		/*Get all recipes that are scheduled before enddate
-		menuSchedules.forEach(schedule -> {
-			scheduledRecipes.add(schedule.getRecipe());
-		});
-		
-		for (MenuSchedule schedule : menuSchedules) {
-			scheduledRecipes.add(schedule.getRecipe());
-		}
-		*/
+		//scale recipes and add to scheduled recipes list
 		for(int i=0;i<menuSchedules.size();i++) {
-			Recipe currentRecipe = menuSchedules.get(i).getRecipe();
-			scheduledRecipes.add(currentRecipe);
+			MenuSchedule menuSchedule = menuSchedules.get(i);
+			Recipe currentRecipe = menuSchedule.getRecipe();
+			Recipe scaledRecipe = currentRecipe.scale(menuSchedule.getServings());			
+			scheduledRecipes.add(scaledRecipe);
 		}
 		
 		List<Ingredient> ingredients = new ArrayList<Ingredient>();
@@ -104,11 +98,7 @@ public class ShoppingList {
 			List<Ingredient> currentIngredients = scheduledRecipes.get(i).getIngredients();
 			ingredients.addAll(currentIngredients);
 		}
-		/*
-		for (Recipe recipe : scheduledRecipes)  {
-			ingredients.addAll(recipe.getIngredients());
-		}
-		*/
+		
 				
 		Map<Food, List<Ingredient>> ingredientsByFood = ingredients.stream().collect(Collectors.groupingBy(Ingredient::getFood));
 		for (Map.Entry<Food, List<Ingredient>> entry : ingredientsByFood.entrySet() ) {
