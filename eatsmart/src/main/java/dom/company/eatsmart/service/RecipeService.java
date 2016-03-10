@@ -110,6 +110,11 @@ public class RecipeService {
 	
 	public void updateRecipe(long userId, Recipe updatedRecipe) {
 		
+		//Check if food was passed correctly
+		FoodService foodService = new FoodService();
+		List<Ingredient> ingredients = updatedRecipe.getIngredients();
+		ingredients.forEach(ingredient -> foodService.validateFood(ingredient.getFood()));
+		
 		Recipe currentRecipe = this.getRecipe(userId, updatedRecipe.getId());
 		
 		EntityManager entityManager = JpaUtil.getEntityManager();
