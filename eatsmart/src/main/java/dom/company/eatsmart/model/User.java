@@ -45,6 +45,7 @@ public class User {
 	@Email(message = "Email syntactically not correct")
 	private String email;
 	
+	@NotBlank(message = "Password must not be blank or null")
 	@Size(min=5, max=32, message = "Password length must be between 5 and 32 characters")
 	private String password;
 	
