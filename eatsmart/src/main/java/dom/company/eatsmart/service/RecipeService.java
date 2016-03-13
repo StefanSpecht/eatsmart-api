@@ -1,6 +1,10 @@
 package dom.company.eatsmart.service;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +24,8 @@ import dom.company.eatsmart.model.Menu;
 import dom.company.eatsmart.model.MenuSchedule;
 import dom.company.eatsmart.model.Recipe;
 import dom.company.eatsmart.model.RecipeBook;
+import dom.company.eatsmart.model.SmartRankRecipe;
+import dom.company.eatsmart.model.Stock;
 import dom.company.eatsmart.model.User;
 
 public class RecipeService {
@@ -62,6 +68,17 @@ public class RecipeService {
 			Collections.sort(recipes, (a, b) -> a.getName().compareToIgnoreCase(b.getName()));
 		}
 		return recipes;				
+	}
+	
+	public List<SmartRankRecipe> getSmartRankRecipes(long userId) {
+		User user = userService.getUser(userId);
+		
+		if (user == null) {
+			throw new DataNotFoundException("User with ID " + userId + " not found");
+		}
+		List<Recipe> recipes = user.getRecipeBook().getRecipes();
+		
+		return this.generateSmartRanking(user, recipes);
 	}
 	
 	public Recipe getRecipe(long userId, long recipeId) {
@@ -192,4 +209,178 @@ public class RecipeService {
 		
 	}
 	
+	public List<SmartRankRecipe> generateSmartRanking(User user, List<Recipe> recipes) {
+		
+		FoodService foodService = new FoodService();
+		
+		//HashMap<double, Recipe> recipeMap = new HashMap<double, Recipe>();
+		List<SmartRankRecipe> rankedRecipes = new ArrayList<SmartRankRecipe>();
+		
+		for (Recipe recipe : recipes) {
+			List<Ingredient> ingredients = recipe.getIngredients();
+			
+			double score = 0;
+			
+			for (Ingredient ingredient : ingredients) {
+				Food food = foodService.getFood(user.getId(), ingredient.getFood().getId());
+				
+				//get available quantity of exact food from fridge stock
+				double availableFoodQuantity = this.getAvailableFoodQuantity(food, user);
+				if (availableFoodQuantity < 0) {
+					availableFoodQuantity = 0;
+				}
+				
+				//get available quantity of parent(s) food from fridge stock
+				double availableFoodQuantityOfParents = this.getAvailableFoodQuantityOfParents(food.getParentFood(), user);
+				
+				//get available quantity of of child(s) food from fridge stock
+				double availableFoodQuantityOfChilds = this.getAvailableFoodQuantityOfChilds(food.getChildFoods(), user);
+				
+				//get available quantity of similar foods from fridge stock
+				double availableFoodQuantityOfRelatives = this.getAvailableFoodQuantityOfRelatives(food, user);
+				
+				//calculate value of available quantity of food - exact
+				double availableFoodQuantityExact = availableFoodQuantity + availableFoodQuantityOfParents + availableFoodQuantityOfChilds;
+				
+				//calculate total available qunatity of this food (exact + related)
+				double availableFoodQuantityTotal = availableFoodQuantityExact + availableFoodQuantityOfRelatives;
+				
+				//required quantity
+				double requiredFoodQuantity = ingredient.getQuantityInMg();
+				
+				if (availableFoodQuantityExact >= requiredFoodQuantity) {
+					score += 100;
+				}
+				
+				if (availableFoodQuantityTotal >= requiredFoodQuantity && availableFoodQuantityExact < requiredFoodQuantity) {
+					score += ( (availableFoodQuantityExact / requiredFoodQuantity) 
+							+ ( (requiredFoodQuantity - availableFoodQuantityExact) / requiredFoodQuantity * 0.75) )
+							* 100;
+				}	
+				
+				if (availableFoodQuantityTotal < requiredFoodQuantity) {
+					score += ( (availableFoodQuantityExact / requiredFoodQuantity) 
+							+ ( availableFoodQuantityOfRelatives / requiredFoodQuantity * 0.75) )
+							* 0.3 * 100;
+				}				
+			}
+			score = score / ingredients.size();
+			rankedRecipes.add(new SmartRankRecipe(recipe,score));
+		}
+		return rankedRecipes;
+	}
+	
+	private double getAvailableFoodQuantity(Food food, User user) {
+		
+		//Get all available stocks for this food
+		List<Stock> stocks = user.getFridge().getStocks();		
+		stocks = stocks
+				.stream()
+				.filter(stock -> stock.getIngredient().getFood().getId() == food.getId())
+				.collect(Collectors.toList());
+				
+		if (stocks.isEmpty()) {
+			return 0;
+		}		
+		
+		//Add all available quantities for this food
+		double quantityOnStock = 0;		
+		for (Stock stock : stocks) {
+			quantityOnStock += stock.getIngredient().getQuantityInMg();
+		}
+		
+		//Get all scheduled menus of future within users horizon
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date today = new Date(calendar.getTimeInMillis());
+		calendar.add(Calendar.HOUR, (24 * user.getHorizonInDays()));
+		calendar.add(Calendar.HOUR, 24);
+		Date endDate = new Date(calendar.getTimeInMillis());
+		
+		//filter menu schedules	by end date
+		List<MenuSchedule> menuSchedules = user.getMenu().getMenuSchedules();
+		menuSchedules = menuSchedules
+				.stream()
+				.filter(schedule -> schedule.getDate().before(endDate))
+				.filter(schedule -> schedule.getDate().after(today))
+				.collect(Collectors.toList());
+		
+		
+		//Get ingredients of all scheduled menus
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
+		for(int i=0;i<menuSchedules.size();i++) {
+			Recipe scaledRecipe = menuSchedules.get(i).getRecipe().scale(menuSchedules.get(i).getServings());
+			List<Ingredient> currentIngredients = scaledRecipe.getIngredients();
+			ingredients.addAll(currentIngredients);
+		}
+		
+		//filter ingredients for those containing the requested food
+		ingredients = ingredients
+				.stream()
+				.filter(ingredient -> ingredient.getFood().getId() == food.getId())
+				.collect(Collectors.toList());
+		
+		//Add all planned quantities for this food
+		double plannedQuantityBySchedules = 0;	
+		
+		for (Ingredient ingredient : ingredients) {
+			plannedQuantityBySchedules += ingredient.getQuantityInMg();
+		}
+					
+		//final calculation of available quantity
+		return quantityOnStock - plannedQuantityBySchedules;	
+	}
+	
+	private double getAvailableFoodQuantityOfParents(Food parentFood, User user) {
+		
+		if (parentFood != null) {
+			double availableFoodQuantity = this.getAvailableFoodQuantity(parentFood, user);
+			Food parentParentFood = parentFood.getParentFood();
+			
+			if (parentParentFood == null) {
+				return availableFoodQuantity;
+			}
+			return availableFoodQuantity + this.getAvailableFoodQuantityOfParents(parentParentFood, user);
+		}
+		return 0;
+	}
+	
+	private double getAvailableFoodQuantityOfChilds(List<Food> childFoods, User user) {
+		
+		if (childFoods != null) {
+			double availableFoodQuantity = 0;
+			
+			for(Food childFood : childFoods) {
+				availableFoodQuantity += this.getAvailableFoodQuantity(childFood, user);
+				
+				List<Food> childChildFoods = childFood.getChildFoods();
+				availableFoodQuantity += this.getAvailableFoodQuantityOfChilds(childChildFoods, user);
+			}
+		return availableFoodQuantity;
+		}
+		return 0;
+	}
+	
+	private double getAvailableFoodQuantityOfRelatives(Food food, User user) {
+		
+		try {
+			List<Food> relatedFoods = food.getParentFood().getChildFoods();
+			relatedFoods.remove(food);
+			
+			double availableFoodQuantityOfRelatives = 0;			
+			for (Food relatedFood : relatedFoods) {
+				availableFoodQuantityOfRelatives += this.getAvailableFoodQuantity(relatedFood, user);
+			}
+			
+			return availableFoodQuantityOfRelatives;
+		}
+		catch (NullPointerException ex) {
+			return 0;
+		}
+		
+				
+		
+	}
 }

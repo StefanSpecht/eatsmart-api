@@ -1,6 +1,7 @@
 package dom.company.eatsmart.resources;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -22,6 +23,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import dom.company.eatsmart.model.Recipe;
+import dom.company.eatsmart.model.SmartRankRecipe;
 import dom.company.eatsmart.service.RecipeService;
 
 
@@ -36,6 +38,19 @@ public class RecipeResource {
 		
 		List<Recipe> recipes = recipeService.getRecipes(userId, qName, sort);
 		GenericEntity<List<Recipe>> entity = new GenericEntity<List<Recipe>>(recipes) {};
+		return Response.ok(entity)
+				.links(getLinks(uriInfo, "GET_ALL"))
+				.build();
+	}
+	
+	@GET
+	@Path("/smartRanking")
+	public Response getRecipesBySmartRanking(@PathParam("userId") long userId, @Context UriInfo uriInfo) {
+		
+		List<SmartRankRecipe> rankedRecipes = recipeService.getSmartRankRecipes(userId);
+		//recipeMap.setRecipeMap(recipeService.getRecipesWithSmartRanking(userId));
+		
+		GenericEntity<List<SmartRankRecipe>> entity = new GenericEntity<List<SmartRankRecipe>>(rankedRecipes) {};
 		return Response.ok(entity)
 				.links(getLinks(uriInfo, "GET_ALL"))
 				.build();
