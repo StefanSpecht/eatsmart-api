@@ -1,10 +1,8 @@
 package dom.company.eatsmart.model;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

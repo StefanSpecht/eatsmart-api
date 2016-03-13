@@ -1,16 +1,12 @@
 package dom.company.eatsmart.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Embeddable
 public class Ingredient {
@@ -70,7 +66,4 @@ public class Ingredient {
 	public void setFood(Food food) {
 		this.food = food;
 	}
-	
-	
-	
 }

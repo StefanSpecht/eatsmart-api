@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
@@ -66,11 +65,6 @@ public class Fridge {
 		
 		if (this.stocks.contains(stock)) {
 			this.stocks.remove(stock);
-			/*
-			if (stock.getFridge().equals(this)) {
-				stock.removeFridge();
-			}
-			*/
 		}
     }
 	

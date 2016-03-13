@@ -1,15 +1,10 @@
 package dom.company.eatsmart.authentication;
 
-import java.net.URI;
-
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
-
-import org.glassfish.jersey.server.Uri;
 
 import dom.company.eatsmart.exception.UnauthorizedException;
 import dom.company.eatsmart.model.User;

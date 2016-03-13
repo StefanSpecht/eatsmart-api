@@ -4,7 +4,6 @@ import java.net.URI;
 import java.sql.Date;
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -25,11 +24,9 @@ import javax.ws.rs.core.UriInfo;
 import dom.company.eatsmart.model.MenuSchedule;
 import dom.company.eatsmart.service.MenuScheduleService;
 
-
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class MenuScheduleResource {
-	
 	MenuScheduleService menuScheduleService = new MenuScheduleService();
 	
 	@GET

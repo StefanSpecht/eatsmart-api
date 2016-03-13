@@ -4,9 +4,7 @@ public class ErrorMessage {
 	
 	private String errorMessage;
 	private int errorCode;
-	
-	
-	
+		
 	public ErrorMessage() {
 		
 	}

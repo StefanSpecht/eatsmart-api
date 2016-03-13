@@ -7,8 +7,6 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.InternetHeaders;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.ws.rs.core.UriInfo;
 
@@ -43,18 +41,11 @@ public class MailService {
 	    		+ "<p>...oder kopiere diese URL in deinen Browser: <br>" + uri +" </p><br>"
 	    		+ "Viel Spaß & Guten Hunger wünscht <br>"
 	    		+ " - Dein EatSmart-Team - ", user.getUsername());
-	    /*
-	    InternetHeaders headers = new InternetHeaders();
-	    headers.addHeader("Content-type", "text/html; charset=UTF-8");
-	    
-	    MimeBodyPart mimeBody = new MimeBodyPart(headers, htmlBody.getBytes("UTF-8"));
-	    */
+	   
 	    Properties properties = new Properties();
 	    properties.put("mail.smtp.host", host);
-	    //properties.put("mail.smtp.starttls.enable","true");
 	    properties.put("mail.smtp.auth", "true");
 	    properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
-	    //properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	    
 	    Session session = Session.getDefaultInstance(properties, mailAuthenticator);
 	    
@@ -88,18 +79,11 @@ public void sendPwdResetMail(User user, String token, UriInfo uriInfo) {
 	    		+ "<p>...oder kopiere diese URL in deinen Browser: <br>" + uri +" </p><br>"
 	    		+ "Liebe Grüße <br>"
 	    		+ " - Dein EatSmart-Team - ", user.getUsername());
-	    /*
-	    InternetHeaders headers = new InternetHeaders();
-	    headers.addHeader("Content-type", "text/html; charset=UTF-8");
-	    
-	    MimeBodyPart mimeBody = new MimeBodyPart(headers, htmlBody.getBytes("UTF-8"));
-	    */
+	   
 	    Properties properties = new Properties();
 	    properties.put("mail.smtp.host", host);
 	    properties.put("mail.smtp.auth", "true");
-	    //properties.put("mail.smtp.starttls.enable","true");
 	    properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
-	    //properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	    
 	    Session session = Session.getDefaultInstance(properties, mailAuthenticator);
 	    
@@ -128,18 +112,11 @@ public void sendNewPwdMail(User user, String password) {
     		+ "<p>dein neues Passwort lautet: %s </p>"
     		+ "Liebe Grüße <br>"
     		+ " - Dein EatSmart-Team - ", user.getUsername(), password);
-    /*
-    InternetHeaders headers = new InternetHeaders();
-    headers.addHeader("Content-type", "text/html; charset=UTF-8");
-    
-    MimeBodyPart mimeBody = new MimeBodyPart(headers, htmlBody.getBytes("UTF-8"));
-    */
+   
     Properties properties = new Properties();
     properties.put("mail.smtp.host", host);
     properties.put("mail.smtp.auth", "true");
-    //properties.put("mail.smtp.starttls.enable","true");
     properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
-    //properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     
     Session session = Session.getDefaultInstance(properties, mailAuthenticator);
     

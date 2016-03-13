@@ -30,8 +30,4 @@ public class VerificationNotSuccessfulException extends RuntimeException {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
-	
-	
 }

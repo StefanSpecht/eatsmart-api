@@ -3,7 +3,6 @@ package dom.company.eatsmart.resources;
 import java.net.URI;
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -23,7 +22,6 @@ import javax.ws.rs.core.UriInfo;
 
 import dom.company.eatsmart.model.Product;
 import dom.company.eatsmart.service.ProductService;
-
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -59,8 +57,7 @@ public class ProductResource {
 				.links(getLinks(uriInfo, "PUT"))
 				.build();		
 	}
-	
-	
+		
 	@POST
 	public Response addProduct(@Valid Product product, @PathParam("userId") long userId, @Context UriInfo uriInfo) {
 		Product newProduct = productService.addProduct(product, userId);

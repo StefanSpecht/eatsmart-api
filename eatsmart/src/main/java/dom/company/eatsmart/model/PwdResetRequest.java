@@ -1,6 +1,5 @@
 package dom.company.eatsmart.model;
 
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class PwdResetRequest {
@@ -26,7 +25,4 @@ public class PwdResetRequest {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
-	
 }

@@ -19,6 +19,5 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
 		return Response.fromResponse(response)
 				.entity(errorMessage)
 				.build();
-		
 	}
 }

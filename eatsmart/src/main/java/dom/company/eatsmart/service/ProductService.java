@@ -1,23 +1,15 @@
 package dom.company.eatsmart.service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import dom.company.eatsmart.exception.DataConflictException;
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.exception.ResourceAlreadyExistsException;
 import dom.company.eatsmart.model.Product;
-import dom.company.eatsmart.model.Food;
 import dom.company.eatsmart.model.ProductCatalogue;
 import dom.company.eatsmart.model.User;
 

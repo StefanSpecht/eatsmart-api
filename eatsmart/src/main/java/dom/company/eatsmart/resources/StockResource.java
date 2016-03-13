@@ -3,7 +3,6 @@ package dom.company.eatsmart.resources;
 import java.net.URI;
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -28,7 +27,6 @@ import dom.company.eatsmart.service.StockService;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class StockResource {
-	
 	StockService stockService = new StockService();
 	
 	@GET
@@ -59,8 +57,7 @@ public class StockResource {
 				.links(getLinks(uriInfo, "PUT"))
 				.build();		
 	}
-	
-	
+		
 	@POST
 	public Response addStock(@Valid Stock stock, @PathParam("userId") long userId, @Context UriInfo uriInfo) {
 		Stock newStock = stockService.addStock(stock, userId);

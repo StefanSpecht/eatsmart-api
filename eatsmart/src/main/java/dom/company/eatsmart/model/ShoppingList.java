@@ -3,30 +3,14 @@ package dom.company.eatsmart.model;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlTransient;
 
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.service.JpaUtil;
-import dom.company.eatsmart.service.RecipeService;
 
 public class ShoppingList {
 
@@ -65,7 +49,7 @@ public class ShoppingList {
 		List<Ingredient> newConsolidatedRecipeIngredients = new ArrayList<Ingredient>();
 		
 		List<MenuSchedule> menuSchedules = user.getMenu().getMenuSchedules();
-		menuSchedules.size(); //fetch from jpa
+		menuSchedules.size();
 		
 		//calculate end date	
 		Calendar calendar = Calendar.getInstance();
@@ -177,5 +161,4 @@ public class ShoppingList {
 			}
 		});
 	}
-	
 }

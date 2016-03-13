@@ -73,7 +73,7 @@ public class Product {
 		}
 	}
 	
-public void removeProductCatalogue() {
+	public void removeProductCatalogue() {
 		
 		ProductCatalogue currentProductCatalogue = this.getProductCatalogue();
 		if (currentProductCatalogue != null){
@@ -84,11 +84,8 @@ public void removeProductCatalogue() {
 		}
 	}
 
-public void updateProduct(Product sourceProduct) {
-	this.ean = sourceProduct.getEan();
-	this.ingredient = sourceProduct.getIngredient();
-}
-	
-	
-	
+	public void updateProduct(Product sourceProduct) {
+		this.ean = sourceProduct.getEan();
+		this.ingredient = sourceProduct.getIngredient();
+	}
 }

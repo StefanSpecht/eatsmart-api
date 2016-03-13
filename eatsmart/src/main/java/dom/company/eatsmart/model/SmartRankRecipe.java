@@ -1,29 +1,8 @@
 package dom.company.eatsmart.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.validation.Valid;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
 
 
 public class SmartRankRecipe {
@@ -124,8 +103,6 @@ public class SmartRankRecipe {
 	public void setServings(int servings) {
 		this.servings = servings;
 	}
-	
-	
 	
 	public double getSmartRanking() {
 		return smartRanking;

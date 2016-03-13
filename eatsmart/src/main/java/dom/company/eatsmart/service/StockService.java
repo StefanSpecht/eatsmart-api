@@ -6,17 +6,11 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Root;
 
 import dom.company.eatsmart.exception.DataConflictException;
 import dom.company.eatsmart.exception.DataNotFoundException;
-import dom.company.eatsmart.model.Stock;
-import dom.company.eatsmart.model.Food;
 import dom.company.eatsmart.model.Fridge;
+import dom.company.eatsmart.model.Stock;
 import dom.company.eatsmart.model.User;
 
 public class StockService {

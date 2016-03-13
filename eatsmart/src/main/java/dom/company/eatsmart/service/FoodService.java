@@ -2,13 +2,11 @@ package dom.company.eatsmart.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -16,8 +14,6 @@ import dom.company.eatsmart.exception.DataConflictException;
 import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.exception.ResourceAlreadyExistsException;
 import dom.company.eatsmart.model.Food;
-import dom.company.eatsmart.model.Recipe;
-import dom.company.eatsmart.model.RecipeBook;
 import dom.company.eatsmart.model.User;
 
 public class FoodService {
@@ -88,14 +84,9 @@ public class FoodService {
 	}
 	
 	public List<Food> getChildFoods(long userId, long parentFoodId) {
-		//catch
-		//User adminUser = userService.getUser("shared");
-		
 		Food parentFood = this.getFood(userId, parentFoodId);
-		
 		return parentFood.getChildFoods();		
 	}
-	
 	
 	public Food addFood(Food food, long userId) {
 		
@@ -135,19 +126,9 @@ public Food addFood(Food food, long userId, long parentFoodId) {
 			throw new ResourceAlreadyExistsException("Foodname already in use");
 		}
 		
-		//food.setParentFood(managedParentFood);
 		food.setOwner(managedOwner);
 		food.setParentFood(managedParentFood);
-		
-		/*
-		if (food.getChildFoods() != null) {
-			food.getChildFoods().forEach((Food childFood) -> {childFood.setParentFood(food);childFood.setOwner(owner);});
-		}
-		if (food.getParentFood() != null) {
-			food.getParentFood().addChildFood(food);
-		}
-		*/
-		
+				
 		entityManager.getTransaction().begin();
 		entityManager.persist(food);
 		entityManager.getTransaction().commit();
@@ -177,7 +158,7 @@ public Food addFood(Food food, long userId, long parentFoodId) {
 		CriteriaQuery<Food> criteriaQuery = criteriaBuilder.createQuery(Food.class);
 		
 		Root<Food> root=criteriaQuery.from(Food.class);
-		List<Predicate> wherePredicates = new ArrayList();
+		List<Predicate> wherePredicates = new ArrayList<Predicate>();
 		wherePredicates.add(criteriaBuilder.equal(root.<Food>get("owner"),owner));
 		wherePredicates.add(criteriaBuilder.equal(root.<Food>get("name"),name));
 

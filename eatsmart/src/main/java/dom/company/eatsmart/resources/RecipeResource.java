@@ -1,10 +1,7 @@
 package dom.company.eatsmart.resources;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -21,11 +18,9 @@ import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-
 import dom.company.eatsmart.model.Recipe;
 import dom.company.eatsmart.model.SmartRankRecipe;
 import dom.company.eatsmart.service.RecipeService;
-
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -74,7 +69,6 @@ public class RecipeResource {
 				.links(getLinks(uriInfo, "PUT"))
 				.build();		
 	}
-	
 	
 	@POST
 	public Response addRecipe(@Valid Recipe recipe, @PathParam("userId") long userId, @Context UriInfo uriInfo) {

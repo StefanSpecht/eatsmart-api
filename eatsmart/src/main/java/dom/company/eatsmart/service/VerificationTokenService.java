@@ -92,7 +92,6 @@ public class VerificationTokenService {
 			
 			// hash to MD5
 			MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm);
-			//byte[] newPasswordHashBytes = messageDigest.digest(newPassword.getBytes(byteEncoding));
 			messageDigest.update(newPassword.getBytes(byteEncoding),0,newPassword.length());
 			String newPasswordHashString = new BigInteger(1, messageDigest.digest()).toString(16);
 			

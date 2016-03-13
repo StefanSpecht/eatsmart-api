@@ -176,7 +176,6 @@ public class Recipe {
 	}
 	
 	public Recipe scale(int servings) {
-		//Recipe scaledRecipe = this;
 		int currentServings = this.servings;
 		List<Ingredient> scaledIngredients = new ArrayList<Ingredient>();
 		
@@ -194,6 +193,4 @@ public class Recipe {
 		
 		return scaledRecipe;
 	}
-	
-	
 }

@@ -12,8 +12,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.glassfish.jersey.server.Uri;
-
 import dom.company.eatsmart.authentication.AuthenticationService;
 import dom.company.eatsmart.model.User;
 import dom.company.eatsmart.service.UserService;
@@ -40,6 +38,5 @@ public class LoginResource {
 		
 		return Response.seeOther(forwardUri)
 				.build();
-		
 	}
 }
