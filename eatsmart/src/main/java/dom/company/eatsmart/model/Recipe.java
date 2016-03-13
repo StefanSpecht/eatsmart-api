@@ -18,6 +18,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
@@ -41,6 +42,7 @@ public class Recipe {
 	private byte[] picture;
 	private String prepInstruction;
 	private String prepTime;
+	@NotNull
 	@Range(min=0, max=5, message="Rating must be between 0 and 5")
 	private int rating;
 	@Range(min=1, max=128, message="Number of servings must be between 1 and 128")
