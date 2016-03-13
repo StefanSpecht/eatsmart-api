@@ -1,7 +1,6 @@
 package dom.company.eatsmart.authentication;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,11 +10,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.persistence.NoResultException;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.UriInfo;
 
 import dom.company.eatsmart.exception.CustomIOException;
-import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.exception.UnauthorizedException;
 import dom.company.eatsmart.model.User;
 import dom.company.eatsmart.model.UserRole;
@@ -23,17 +20,13 @@ import dom.company.eatsmart.service.UserService;
 
 public class AuthenticationService {
 	
-	private String encodedCredentials;
-	private Map<String,String> decodedCredentials;
-	private User authenticatedUser;
-	private Boolean authenticated;
-	
 	private static final String USER_PATH_PATTERN = "users\\/(\\d+)($|\\/.*)";
 	private static final String LOGIN_PATH_PATTERN = "login";
 	
+	private User authenticatedUser;
+	
 	public AuthenticationService() {
 		authenticatedUser = null;
-		authenticated = false;
 	}
 	public User getAuthenticatedUser() {
 		return authenticatedUser;
@@ -65,11 +58,10 @@ public class AuthenticationService {
 		decodedAuthCredentials.put("password", password);
 		return decodedAuthCredentials;		
 	}
-	
-	
+		
 	public void authenticate(String authCredentials) {
 
-		this.authenticated = true;
+		//this.authenticated = true;
 		if (authCredentials == null)
 			throw new UnauthorizedException("Authentication failed. Please provide username and password");
 		
@@ -82,16 +74,17 @@ public class AuthenticationService {
 			String username = decodedAuthCredentials.get("username");
 			String password = decodedAuthCredentials.get("password");
 			UserService userService = new UserService();
+			
 			//Try to find user
 			User user = userService.getUser(username);
 		
 			//Check password
 			if (user.getUsername().equals(username) && user.getPassword().equals(password) ) {
 				this.authenticatedUser = user;
-				this.authenticated = true;
+				//this.authenticated = true;
 			}
 			else {
-				this.authenticated = false;
+				//this.authenticated = false;
 				throw new UnauthorizedException("Authentication failed. Wrong username or password");
 			}
 		}
