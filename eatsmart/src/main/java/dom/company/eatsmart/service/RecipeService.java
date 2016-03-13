@@ -267,6 +267,8 @@ public class RecipeService {
 			score = score / ingredients.size();
 			rankedRecipes.add(new SmartRankRecipe(recipe,score));
 		}
+		
+		Collections.sort(rankedRecipes, (b, a) -> a.getSmartRanking() < b.getSmartRanking() ? -1 : a.getSmartRanking() == b.getSmartRanking() ? 0 : 1);
 		return rankedRecipes;
 	}
 	

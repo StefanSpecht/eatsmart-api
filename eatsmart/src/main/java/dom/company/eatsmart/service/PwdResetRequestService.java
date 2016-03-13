@@ -10,6 +10,7 @@ import dom.company.eatsmart.exception.DataNotFoundException;
 import dom.company.eatsmart.model.PwdResetRequest;
 import dom.company.eatsmart.model.TokenType;
 import dom.company.eatsmart.model.User;
+import dom.company.eatsmart.model.UserRole;
 
 public class PwdResetRequestService {
 
@@ -21,8 +22,15 @@ public class PwdResetRequestService {
 		
 		try {
 			User user = userService.getUser(pwdResetRequest.getUsername());
+			
+			//Verify posted data
 			if (!pwdResetRequest.getEmail().equals(user.getEmail())) {
 				throw new DataNotFoundException("Username and Mail combination not found");
+			}
+			
+			//check that user has no valid registration verification token
+			if (user.getUserRoles().contains(UserRole.DISABLED)) {
+				throw new DataConflictException("Please complete registration process first");
 			}
 			
 			String token = UUID.randomUUID().toString();

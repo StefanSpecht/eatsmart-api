@@ -52,7 +52,7 @@ public class RecipeResource {
 		
 		GenericEntity<List<SmartRankRecipe>> entity = new GenericEntity<List<SmartRankRecipe>>(rankedRecipes) {};
 		return Response.ok(entity)
-				.links(getLinks(uriInfo, "GET_ALL"))
+				.links(getLinks(uriInfo, "GET_ALL_RANKED"))
 				.build();
 	}
 	
@@ -98,13 +98,14 @@ public class RecipeResource {
 	
 	private Link[] getLinks(UriInfo uriInfo, String method) {
 		Link self_all = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,POST").build();
+		Link selfAllRanked = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET").build();
 		Link self = Link.fromUri(uriInfo.getAbsolutePath()).rel("self").param("verb", "GET,PUT,DELETE").build();
 		Link all = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("..").build()).rel("all").param("verb", "GET").build();
 		Link findByName = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("qName=").build()).rel("findByName").param("verb", "GET").build();
 		Link sortByNameAsc = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("sort=name").build()).rel("sortByNameAsc").param("verb", "GET").build();
 		Link sortByNameDesc = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("sort=-name").build()).rel("sortByNameDesc").param("verb", "GET").build();
 		Link sortByRatingDesc = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("sort=-rating").build()).rel("sortByRatingDesc").param("verb", "GET").build();
-		Link sortBySmartRankingDesc = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("sort=-SmartRanking").build()).rel("sortBySmartRankingDesc").param("verb", "GET").build();
+		Link sortBySmartRankingDesc = Link.fromUri(uriInfo.getAbsolutePathBuilder().path("smartRanking").build()).rel("sortBySmartRankingDesc").param("verb", "GET").build();
 		Link scale = Link.fromUri(uriInfo.getAbsolutePathBuilder().replaceQuery("servings=").build()).rel("scale").param("verb", "GET").build();
 		
 		Link newRecipe = Link.fromUri(uriInfo.getAbsolutePath()).rel("new").param("verb", "POST").build();
@@ -116,6 +117,8 @@ public class RecipeResource {
 		switch (method) {
 			case "GET_ALL":
 				return new Link[] {self_all, findByName, sortByNameAsc, sortByNameDesc, sortByRatingDesc, sortBySmartRankingDesc, newRecipe, user_all, logout};
+			case "GET_ALL_RANKED":
+				return new Link[] {selfAllRanked, findByName, sortByNameAsc, sortByNameDesc, sortByRatingDesc, sortBySmartRankingDesc, newRecipe, user_all, logout};
 			case "GET":
 				return new Link[] {self, all, scale, user, logout};
 			case "POST":
