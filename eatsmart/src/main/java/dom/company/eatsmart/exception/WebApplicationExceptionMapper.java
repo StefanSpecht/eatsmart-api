@@ -14,32 +14,11 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
 	public Response toResponse(WebApplicationException ex) {
 		Response response = ex.getResponse();
 		
-		if (response.getStatus() == 405) {
-			ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 405);
-			return Response.fromResponse(response)
-					.entity(errorMessage)
-					.build();
-		}
-		
-		if (response.getStatus() == 404) {
-			ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 404);
-			return Response.fromResponse(response)
-					.entity(errorMessage)
-					.build();
-		}
-		/*
-		if (response.getStatus() == 400) {
-			ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 400);
-			return Response.fromResponse(response)
-					.entity(errorMessage)
-					.build();
-		}
-		*/
+	
 		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), response.getStatus());
 		return Response.fromResponse(response)
 				.entity(errorMessage)
 				.build();
 		
-		//return ex.getResponse();	
 	}
 }
