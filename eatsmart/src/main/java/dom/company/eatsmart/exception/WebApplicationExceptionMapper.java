@@ -27,14 +27,19 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
 					.entity(errorMessage)
 					.build();
 		}
-		
+		/*
 		if (response.getStatus() == 400) {
 			ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 400);
 			return Response.fromResponse(response)
 					.entity(errorMessage)
 					.build();
 		}
+		*/
+		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), response.getStatus());
+		return Response.fromResponse(response)
+				.entity(errorMessage)
+				.build();
 		
-		return ex.getResponse();	
+		//return ex.getResponse();	
 	}
 }
