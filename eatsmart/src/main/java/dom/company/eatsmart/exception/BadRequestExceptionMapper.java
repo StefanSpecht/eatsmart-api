@@ -12,8 +12,8 @@ public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestExce
 
 	@Override
 	public Response toResponse(BadRequestException ex) {
-		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 409);
-		return Response.status(Status.CONFLICT)
+		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 400);
+		return Response.status(Status.BAD_REQUEST)
 				.entity(errorMessage)
 				.build();
 	}
