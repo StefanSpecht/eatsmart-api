@@ -4,7 +4,9 @@ public enum ScaleUnit {
 	MG,
 	G,
 	KG,
-	TEESPOON,
+	TEASPOON,
 	TABLESPOON,
+	ML,
+	L,
 	UNIT
 }
