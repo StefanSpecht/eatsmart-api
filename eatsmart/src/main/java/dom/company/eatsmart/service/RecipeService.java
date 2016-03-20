@@ -258,7 +258,12 @@ public class RecipeService {
 							* 0.3 * 100;
 				}				
 			}
-			score = score / ingredients.size();
+			if (ingredients.size() != 0) {
+				score = score / ingredients.size();
+			}
+			else {
+				score = 100;
+			}
 			rankedRecipes.add(new SmartRankRecipe(recipe,score));
 		}
 		
