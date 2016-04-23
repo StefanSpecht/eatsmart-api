@@ -264,6 +264,9 @@ public class RecipeService {
 			else {
 				score = 100;
 			}
+			// Round the score to integer
+			score = Math.round(score);
+			
 			rankedRecipes.add(new SmartRankRecipe(recipe,score));
 		}
 		
